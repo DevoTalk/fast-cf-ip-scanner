@@ -1,12 +1,15 @@
-﻿namespace fast_cf_ip_scanner;
+﻿using fast_cf_ip_scanner.ViewModels;
+
+namespace fast_cf_ip_scanner;
 
 public partial class MainPage : ContentPage
 {
 
 
-	public MainPage()
+	public MainPage(MainPageViewModel viewModel)
 	{
 		InitializeComponent();
+		BindingContext = viewModel;
 	}
 }
 
