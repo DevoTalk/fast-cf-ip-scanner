@@ -8,6 +8,9 @@
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
+            <CollectionView>
+                
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 

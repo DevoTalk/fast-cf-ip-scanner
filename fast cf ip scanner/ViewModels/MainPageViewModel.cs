@@ -8,5 +8,6 @@ namespace fast_cf_ip_scanner.ViewModels
 {
     public partial class MainPageViewModel : BaseViewModel
     {
+
     }
 }
