@@ -1,6 +1,4 @@
-﻿using fast_cf_ip_scanner.ViewModels;
-
-namespace fast_cf_ip_scanner;
+﻿namespace fast_cf_ip_scanner;
 
 public static class MauiProgram
 {
@@ -17,6 +15,7 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();
+		builder.Services.AddSingleton<IPServices>();
 
 		return builder.Build();
 	}
