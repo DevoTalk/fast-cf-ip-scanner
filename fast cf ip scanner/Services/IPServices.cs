@@ -14,7 +14,7 @@ namespace fast_cf_ip_scanner.Services
         public IPServices()
         {
             SocketsHandler = new SocketsHttpHandler();
-            Client = new HttpClient(SocketsHandler) 
+            Client = new HttpClient(SocketsHandler)
             {
                 Timeout = TimeSpan.FromSeconds(5),
             };
@@ -55,13 +55,13 @@ namespace fast_cf_ip_scanner.Services
             validIp.OrderByDescending(v => v.Ping);
             return validIp;
         }
-        public string GetRandomIp()
+        string GetRandomIp()
         {
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"IPAddresses.txt");
             var ipAddresses = File.ReadAllLines(path);
             Random random = new Random();
             return ipAddresses[random.Next(ipAddresses.Length)];
-            
         }
+
     }
 }
