@@ -8,20 +8,20 @@
              BackgroundColor="Black">
 
     <ScrollView>
-        
+
         <VerticalStackLayout>
-            
+
             <Grid
                 ColumnDefinitions=".20*,.80*"
                 Margin="10">
-                
+
                 <Button Text="start"
                         Grid.Column="0"
                         Command="{Binding GetValidIPsCommand}"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand">
                 </Button>
-                
+
                 <Entry
                     Grid.Column="1"
                     BackgroundColor="DimGray"
@@ -29,11 +29,15 @@
                     Placeholder="enter max of ping defalt is 5000"
                     PlaceholderColor="White"
                     Text="{Binding MaxPingOfIP}"/>
-                
+
             </Grid>
-            
+
             <CollectionView ItemsSource="{Binding ValidIPs}"
-                            HorizontalOptions="Center">
+                             x:Name="validIPCollectionView"
+                            HorizontalOptions="Center"
+                            SelectionChangedCommand ="{Binding CopySelectedIPCommand}"
+                            SelectionChangedCommandParameter="{Binding Source={x:Reference validIPCollectionView}, Path=SelectedItem}"
+                            SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:IPModel">
                         <HorizontalStackLayout

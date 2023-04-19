@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -37,14 +38,28 @@ namespace fast_cf_ip_scanner.ViewModels
         }
         int ConvertMaxPingOfIPToInt(string maxPing) 
         {
-            try
-            {
-                return Convert.ToInt32(maxPing);
-            }
-            catch
+            if(maxPing == null)
             {
                 return 5000;
             }
+            else
+            {
+                try
+                {
+                    return Convert.ToInt32(maxPing);
+                }
+                catch
+                {
+                    return 5000;
+                }
+            }
+            
+        }
+        [RelayCommand]
+        async Task CopySelectedIPAsync(IPModel iPModel)
+        {
+            await Clipboard.SetTextAsync(iPModel.IP);
+            await App.Current.MainPage.DisplayAlert("Copied", $"the {iPModel.IP} is copied", "OK");
         }
     }
 }
