@@ -4,27 +4,45 @@
              x:Class="fast_cf_ip_scanner.MainPage"
              xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
              x:DataType="viewmodel:MainPageViewModel"
-             xmlns:model="clr-namespace:fast_cf_ip_scanner.Model">
+             xmlns:model="clr-namespace:fast_cf_ip_scanner.Model"
+             BackgroundColor="Black">
 
     <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-            <Button Text="start" 
-                    
-                    Command="{Binding GetValidIPsCommand}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start">
+        
+        <VerticalStackLayout>
+            
+            <Grid
+                ColumnDefinitions=".20*,.80*"
+                Margin="10">
                 
-            </Button>
-            <CollectionView ItemsSource="{Binding ValidIPs}">
+                <Button Text="start"
+                        Grid.Column="0"
+                        Command="{Binding GetValidIPsCommand}"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand">
+                </Button>
+                
+                <Entry
+                    Grid.Column="1"
+                    BackgroundColor="DimGray"
+                    Margin="10"
+                    Placeholder="enter max of ping defalt is 5000"
+                    PlaceholderColor="White"
+                    Text="{Binding MaxPingOfIP}"/>
+                
+            </Grid>
+            
+            <CollectionView ItemsSource="{Binding ValidIPs}"
+                            HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:IPModel">
-                        <VerticalStackLayout>
+                        <HorizontalStackLayout
+                            Padding="15"
+                            >
                             <Label Text="{Binding IP}"></Label>
+                            <Label Text="  ping :  "></Label>
                             <Label Text="{Binding Ping}"></Label>
-                        </VerticalStackLayout>
+                        </HorizontalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
