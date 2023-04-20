@@ -12,7 +12,7 @@ namespace fast_cf_ip_scanner.Services
 {
     public class IPServices
     {
-        List<string> ipAddresses = new List<string>();
+        List<string> IpAddresses = new List<string>();
         public IPServices()
         {
 
@@ -21,14 +21,14 @@ namespace fast_cf_ip_scanner.Services
         
         public async Task<List<IPModel>> GetIpValid(int maxPing)
         {
-            if (ipAddresses.Count == 0)
+            if (IpAddresses.Count == 0)
             {
                 using var stream = await FileSystem.OpenAppPackageFileAsync("IPAddresses.txt");
                 using var reader = new StreamReader(stream);
                 string line;
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    ipAddresses.Add(line);
+                    IpAddresses.Add(line);
                 }
             }
             SocketsHttpHandler SocketsHandler = new SocketsHttpHandler();
@@ -85,7 +85,7 @@ namespace fast_cf_ip_scanner.Services
         {
            // var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"IPAddresses.txt");
             Random random = new Random();
-            return ipAddresses[random.Next(ipAddresses.Count)];
+            return IpAddresses[random.Next(IpAddresses.Count)];
         }
     }
 }
