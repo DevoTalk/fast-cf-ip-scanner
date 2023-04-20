@@ -6,16 +6,31 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.WebSockets;
 using System.Reflection;
+using System.Resources;
 
 namespace fast_cf_ip_scanner.Services
 {
     public class IPServices
     {
+        List<string> ipAddresses = new List<string>();
         public IPServices()
         {
+
         }
+
+        
         public async Task<List<IPModel>> GetIpValid(int maxPing)
         {
+            if (ipAddresses.Count == 0)
+            {
+                using var stream = await FileSystem.OpenAppPackageFileAsync("IPAddresses.txt");
+                using var reader = new StreamReader(stream);
+                string line;
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    ipAddresses.Add(line);
+                }
+            }
             SocketsHttpHandler SocketsHandler = new SocketsHttpHandler();
             HttpClient Client = new HttpClient(SocketsHandler)
             {
@@ -68,10 +83,9 @@ namespace fast_cf_ip_scanner.Services
         }
         string GetRandomIp()
         {
-            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"IPAddresses.txt");
-            var ipAddresses = File.ReadAllLines(path);
+           // var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"IPAddresses.txt");
             Random random = new Random();
-            return ipAddresses[random.Next(ipAddresses.Length)];
+            return ipAddresses[random.Next(ipAddresses.Count)];
         }
     }
 }

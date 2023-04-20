@@ -55,6 +55,7 @@ namespace fast_cf_ip_scanner.ViewModels
             }
             
         }
+
         [RelayCommand]
         async Task CopySelectedIPAsync(IPModel iPModel)
         {
