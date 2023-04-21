@@ -10,6 +10,5 @@ namespace fast_cf_ip_scanner.Model
     {
         public string IP { get; set; }
         public int Ping { get; set; }
-        public bool IsValid { get; set; }
     }
 }

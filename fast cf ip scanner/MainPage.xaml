@@ -12,11 +12,13 @@
         <VerticalStackLayout>
 
             <Grid
+                RowDefinitions="1*,1*,100*"
                 ColumnDefinitions=".20*,.80*"
                 Margin="10">
 
                 <Button Text="start"
                         Grid.Column="0"
+                        Grid.Row="1"
                         Command="{Binding GetValidIPsCommand}"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand">
@@ -24,12 +26,12 @@
 
                 <Entry
                     Grid.Column="1"
+                    Grid.Row="1"
                     BackgroundColor="DimGray"
                     Margin="10"
                     Placeholder="enter max of ping defalt is 5000"
                     PlaceholderColor="White"
                     Text="{Binding MaxPingOfIP}"/>
-
             </Grid>
 
             <CollectionView ItemsSource="{Binding ValidIPs}"
@@ -43,9 +45,12 @@
                         <HorizontalStackLayout
                             Padding="15"
                             >
-                            <Label Text="{Binding IP}"></Label>
-                            <Label Text="  ping :  "></Label>
-                            <Label Text="{Binding Ping}"></Label>
+                            <Label Text="{Binding IP}"
+                                   TextColor="White"></Label>
+                            <Label Text="  ping :  "
+                                   TextColor="White"></Label>
+                            <Label Text="{Binding Ping}"
+                                   TextColor="White"></Label>
                         </HorizontalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

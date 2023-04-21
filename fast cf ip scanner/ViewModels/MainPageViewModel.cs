@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
+﻿
 namespace fast_cf_ip_scanner.ViewModels
 {
     public partial class MainPageViewModel : BaseViewModel
@@ -10,6 +8,7 @@ namespace fast_cf_ip_scanner.ViewModels
 
         [ObservableProperty]
         string maxPingOfIP;
+        
 
         readonly IPServices _iPServices;
 
@@ -57,10 +56,14 @@ namespace fast_cf_ip_scanner.ViewModels
         }
 
         [RelayCommand]
-        async Task CopySelectedIPAsync(IPModel iPModel)
+        async Task CopySelectedIPAsync(IPModel ipModel)
         {
-            await Clipboard.SetTextAsync(iPModel.IP);
-            await App.Current.MainPage.DisplayAlert("Copied", $"the {iPModel.IP} is copied", "OK");
+            if (ipModel != null)
+            {
+                await Clipboard.SetTextAsync(ipModel.IP);
+                await App.Current.MainPage.DisplayAlert("Copied", $"the {ipModel.IP} is copied", "OK");
+            }
+
         }
     }
 }
