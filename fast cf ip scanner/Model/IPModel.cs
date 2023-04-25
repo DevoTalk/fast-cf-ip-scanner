@@ -14,7 +14,6 @@ namespace fast_cf_ip_scanner.Model
         [PrimaryKey,AutoIncrement]
         public int Id { get; set; }
         
-        [Required]
         public string IP { get; set; }
         
         public int Ping { get; set; }

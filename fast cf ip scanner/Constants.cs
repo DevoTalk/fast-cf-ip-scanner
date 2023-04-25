@@ -12,6 +12,6 @@
             // enable multi-threaded database access
             SQLite.SQLiteOpenFlags.SharedCache;
         public static string DatabasePath => 
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), DatabaseFilename);
+            Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
     }
 }

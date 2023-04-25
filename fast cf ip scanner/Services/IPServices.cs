@@ -14,7 +14,6 @@ namespace fast_cf_ip_scanner.Services
     public class IPServices
     {
         private readonly FastCFIPScannerDatabase _db;
-        List<string> IpAddresses = new List<string>();
         public IPServices(FastCFIPScannerDatabase db)
         {
             _db = db;
@@ -23,30 +22,20 @@ namespace fast_cf_ip_scanner.Services
         
         public async Task<List<IPModel>> GetIpValid(int maxPing)
         {
-            if (IpAddresses.Count == 0)
-            {
-                using var stream = await FileSystem.OpenAppPackageFileAsync("IPAddresses.txt");
-                using var reader = new StreamReader(stream);
-                string line;
-                while ((line = await reader.ReadLineAsync()) != null)
-                {
-                    IpAddresses.Add(line);
-                }
-            }
-
             SocketsHttpHandler SocketsHandler = new SocketsHttpHandler();
             HttpClient Client = new HttpClient(SocketsHandler)
             {
                 Timeout = TimeSpan.FromSeconds(maxPing),
             };
-            
+
+            var IpAddresses = await _db.GetAllIPs();
             var validIp = new List<IPModel>();
             for (int i = 0; i < 20; i++)
             {
                 var t = new Task(async () =>
                 {
                     var stopwatch = new Stopwatch();
-                    var ipAddresse = GetRandomIp();
+                    var ipAddresse = GetRandomIp(IpAddresses);
                     HttpResponseMessage result = new HttpResponseMessage();
                     try
                     {
@@ -74,10 +63,10 @@ namespace fast_cf_ip_scanner.Services
             await Task.Delay(maxPing);
             return validIp;
         }
-        string GetRandomIp()
+        string GetRandomIp(List<IPModel> ips)
         {
             Random random = new Random();
-            return IpAddresses[random.Next(IpAddresses.Count)];
+            return ips[random.Next(ips.Count)].IP;
         }
     }
 }

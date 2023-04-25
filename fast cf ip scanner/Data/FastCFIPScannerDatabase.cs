@@ -13,6 +13,7 @@ namespace fast_cf_ip_scanner.Data
             DataBase = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
             await DataBase.CreateTableAsync<IPModel>();
             await DataBase.CreateTableAsync<WorkerModel>();
+            await AddIpsListToDB();
         }
         public async Task AddIpsListToDB()
         {
@@ -4638,33 +4639,13 @@ namespace fast_cf_ip_scanner.Data
                     "94.140.0.0/24",
                     "95.179.131.0/24",
                 };
-                var c = iplist.Count();
-                var index=0;
-                var sindex=0;
-                var eindex=0;
                 foreach (var ip in iplist)
                 {
-                    try
+                    await AddIP(new IPModel()
                     {
-                        await AddIP(new IPModel()
-                        {
-                            IP = ip,
-                            Ping = 0
-                        });
-                        sindex++;
-                    }
-                    catch (Exception ex) 
-                    {
-                        eindex++;
-                    }
-                    finally
-                    {
-                        index++;
-                    }
-                }
-                if(sindex == 0)
-                {
-
+                        IP = ip,
+                        Ping = 0
+                    });
                 }
             }
         }
