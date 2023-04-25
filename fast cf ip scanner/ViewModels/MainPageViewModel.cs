@@ -8,7 +8,9 @@ namespace fast_cf_ip_scanner.ViewModels
 
         [ObservableProperty]
         string maxPingOfIP;
-        
+
+        [ObservableProperty]
+        string startBtnEnable;
 
         readonly IPServices _iPServices;
 
@@ -22,6 +24,7 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async void GetValidIPs()
         {
+            StartBtnEnable = false.ToString();
             List<IPModel> validIp = new List<IPModel>();
             ValidIPs.Clear();
             var maxping = ConvertMaxPingOfIPToInt(MaxPingOfIP);
@@ -34,6 +37,7 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 ValidIPs.Add(ip);
             }
+            StartBtnEnable = true.ToString();
         }
         int ConvertMaxPingOfIPToInt(string maxPing) 
         {

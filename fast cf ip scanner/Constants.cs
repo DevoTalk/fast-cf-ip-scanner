@@ -1,4 +1,4 @@
-﻿namespace fast_cf_ip_scanner.Constants
+﻿namespace fast_cf_ip_scanner
 {
     public static class Constants
     {
@@ -11,8 +11,7 @@
             SQLite.SQLiteOpenFlags.Create |
             // enable multi-threaded database access
             SQLite.SQLiteOpenFlags.SharedCache;
-
-        public static string DatabasePath =>
-            Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
+        public static string DatabasePath => 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), DatabaseFilename);
     }
 }

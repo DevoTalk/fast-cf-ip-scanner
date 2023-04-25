@@ -17,6 +17,7 @@
                 Margin="10">
 
                 <Button Text="start"
+                        IsEnabled="{Binding StartBtnEnable}"
                         Grid.Column="0"
                         Grid.Row="1"
                         Command="{Binding GetValidIPsCommand}"

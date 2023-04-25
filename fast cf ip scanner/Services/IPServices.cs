@@ -1,4 +1,5 @@
 ﻿
+using fast_cf_ip_scanner.Data;
 using fast_cf_ip_scanner.Model;
 using System.Diagnostics;
 using System.Net;
@@ -12,10 +13,11 @@ namespace fast_cf_ip_scanner.Services
 {
     public class IPServices
     {
+        private readonly FastCFIPScannerDatabase _db;
         List<string> IpAddresses = new List<string>();
-        public IPServices()
+        public IPServices(FastCFIPScannerDatabase db)
         {
-
+            _db = db;
         }
 
         
