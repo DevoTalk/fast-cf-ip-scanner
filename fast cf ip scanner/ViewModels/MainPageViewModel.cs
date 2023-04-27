@@ -1,4 +1,6 @@
 ﻿
+using fast_cf_ip_scanner.Data;
+
 namespace fast_cf_ip_scanner.ViewModels
 {
     public partial class MainPageViewModel : BaseViewModel
@@ -10,21 +12,25 @@ namespace fast_cf_ip_scanner.ViewModels
         string maxPingOfIP;
 
         [ObservableProperty]
-        string startBtnEnable;
+        bool startBtnEnable;
+
+        [ObservableProperty]
+        bool isBusy;
 
         readonly IPServices _iPServices;
-
         public MainPageViewModel(IPServices iPServices)
         {
             validIPs = new ObservableCollection<IPModel>();
             _iPServices = iPServices;
+            
         }
 
 
         [RelayCommand]
         async void GetValidIPs()
         {
-            StartBtnEnable = false.ToString();
+            StartBtnEnable = false;
+            IsBusy = true;
             List<IPModel> validIp = new List<IPModel>();
             ValidIPs.Clear();
             var maxping = ConvertMaxPingOfIPToInt(MaxPingOfIP);
@@ -37,7 +43,8 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 ValidIPs.Add(ip);
             }
-            StartBtnEnable = true.ToString();
+            IsBusy = false;
+            StartBtnEnable = true;
         }
         int ConvertMaxPingOfIPToInt(string maxPing) 
         {

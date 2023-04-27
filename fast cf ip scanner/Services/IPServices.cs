@@ -60,7 +60,14 @@ namespace fast_cf_ip_scanner.Services
                 });
                 t.Start();
             }
-            await Task.Delay(maxPing);
+            for (int i = 0;i < maxPing/100; i++)
+            {
+                await Task.Delay(100);
+                if (validIp.Count >= 10)
+                {
+                    return validIp;
+                }
+            }
             return validIp;
         }
         string GetRandomIp(List<IPModel> ips)

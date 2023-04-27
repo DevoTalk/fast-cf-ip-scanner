@@ -1,10 +1,12 @@
-﻿using SQLite;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SQLite;
 namespace fast_cf_ip_scanner.Data
 {
 
     public class FastCFIPScannerDatabase
     {
         SQLiteAsyncConnection DataBase;
+        MemoryCache Cache = new MemoryCache(new MemoryCacheOptions());
         async Task Init()
         {
             if (DataBase is not null)
@@ -4651,8 +4653,14 @@ namespace fast_cf_ip_scanner.Data
         }
         public async Task<List<IPModel>> GetAllIPs()
         {
+            if (Cache.TryGetValue("AllIPs", out List<IPModel> ipList))
+            {
+                return ipList;
+            }
             await Init();
-            return await DataBase.Table<IPModel>().ToListAsync();
+            var ips = await DataBase.Table<IPModel>().ToListAsync();
+            Cache.Set("AllIPs", ips);
+            return ips;
         }
         public async Task AddIP(IPModel ip)
         {

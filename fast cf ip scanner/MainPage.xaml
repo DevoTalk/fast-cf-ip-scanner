@@ -4,9 +4,12 @@
              x:Class="fast_cf_ip_scanner.MainPage"
              xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
              x:DataType="viewmodel:MainPageViewModel"
+             xmlns:local="clr-namespace:fast_cf_ip_scanner.Services"
              xmlns:model="clr-namespace:fast_cf_ip_scanner.Model"
              BackgroundColor="Black">
-
+    <ContentPage.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </ContentPage.Resources>
     <ScrollView>
 
         <VerticalStackLayout>
@@ -35,17 +38,18 @@
                     Text="{Binding MaxPingOfIP}"/>
             </Grid>
 
-            <CollectionView ItemsSource="{Binding ValidIPs}"
+            <CollectionView ItemsSource="{Binding ValidIPs}" 
                              x:Name="validIPCollectionView"
                             HorizontalOptions="Center"
                             SelectionChangedCommand ="{Binding CopySelectedIPCommand}"
                             SelectionChangedCommandParameter="{Binding Source={x:Reference validIPCollectionView}, Path=SelectedItem}"
-                            SelectionMode="Single">
+                            SelectionMode="Single"
+                            IsVisible="{Binding IsBusy,Converter={StaticResource InverseBooleanConverter}}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:IPModel">
                         <HorizontalStackLayout
-                            Padding="15"
-                            >
+                            Padding="15">
+
                             <Label Text="{Binding IP}"
                                    TextColor="White"></Label>
                             <Label Text="  ping :  "
@@ -56,7 +60,8 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>
