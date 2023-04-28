@@ -1,9 +1,7 @@
 ﻿
-using fast_cf_ip_scanner.Data;
-
 namespace fast_cf_ip_scanner.ViewModels
 {
-    public partial class MainPageViewModel : BaseViewModel
+    public partial class ScanPageViewModel : BaseViewModel
     {
         [ObservableProperty]
         ObservableCollection<IPModel> validIPs;
@@ -18,12 +16,12 @@ namespace fast_cf_ip_scanner.ViewModels
         bool isBusy;
 
         readonly IPService _iPServices;
-        public MainPageViewModel(IPService iPServices)
+        public ScanPageViewModel(IPService iPServices)
         {
             validIPs = new ObservableCollection<IPModel>();
             _iPServices = iPServices;
             this.Title = "scan";
-            
+
         }
 
 
@@ -39,7 +37,7 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 validIp.AddRange(await _iPServices.GetIpValid(maxping));
             }
-            validIp.Sort((x,y)=>x.Ping.CompareTo(y.Ping));
+            validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));
             foreach (var ip in validIp)
             {
                 ValidIPs.Add(ip);
@@ -47,9 +45,9 @@ namespace fast_cf_ip_scanner.ViewModels
             IsBusy = false;
             StartBtnEnable = true;
         }
-        int ConvertMaxPingOfIPToInt(string maxPing) 
+        int ConvertMaxPingOfIPToInt(string maxPing)
         {
-            if(maxPing == null)
+            if (maxPing == null)
             {
                 return 5000;
             }
@@ -64,7 +62,7 @@ namespace fast_cf_ip_scanner.ViewModels
                     return 5000;
                 }
             }
-            
+
         }
 
         [RelayCommand]

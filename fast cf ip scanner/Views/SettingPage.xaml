@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="fast_cf_ip_scanner.Views.SettingPage"
+             xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
+             x:DataType="viewmodel:SettingViewModel"
+             BackgroundColor="Black"
+             xmlns:model="clr-namespace:fast_cf_ip_scanner.Model">
+    <VerticalStackLayout>
+    <Grid
+                RowDefinitions="1*,1*,100*"
+                ColumnDefinitions=".80*,.20*"
+                Margin="10">
+            <Entry
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    BackgroundColor="DimGray"
+                    Margin="10"
+                    Placeholder="enter new Worker"
+                    PlaceholderColor="White"
+                    Text="{Binding NewWorkerUrl}"/>
+
+            <Button Text="start"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Command="{Binding AddNewWorkerUrlCommand}"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand">
+            </Button>
+        </Grid>
+        <CollectionView ItemsSource="{Binding Workers}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:WorkerModel">
+                    <Grid Padding="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label 
+                            Grid.Column="0"
+                            Text="{Binding Url}"
+                            TextColor="White"/>
+                        <Button
+                            Grid.Column="1" 
+                            Text="Delete" 
+                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SettingViewModel}}, Path=DeleteWorkerCommand}"
+                            CommandParameter="{Binding .}"
+                            BackgroundColor="Red"
+                            TextColor="White" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

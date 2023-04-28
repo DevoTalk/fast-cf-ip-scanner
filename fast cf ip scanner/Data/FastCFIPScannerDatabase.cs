@@ -4667,5 +4667,20 @@ namespace fast_cf_ip_scanner.Data
             await Init();
             await DataBase.InsertAsync(ip);
         }
+        public async Task AddWorker(WorkerModel workerUrl)
+        {
+            await Init();
+            await DataBase.InsertAsync(workerUrl);
+        }
+        public async Task<List<WorkerModel>> GetAllWorker()
+        {
+            await Init();
+            return await DataBase.Table<WorkerModel>().ToListAsync();
+        }
+        public async Task DeleteWorker(WorkerModel worker)
+        {
+           await Init();
+           await DataBase.Table<WorkerModel>().Where(w => w.Url == worker.Url).DeleteAsync();
+        }
     }
 }

@@ -6,11 +6,30 @@
     xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
     x:DataType="viewmodel:BaseViewModel"
     xmlns:local="clr-namespace:fast_cf_ip_scanner"
-    Shell.FlyoutBehavior="Disabled">
+    Shell.FlyoutBehavior="Disabled"
+    xmlns:views="clr-namespace:fast_cf_ip_scanner.Views"
+    >
 
-    <ShellContent
+    <!--<ShellContent
         
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" />-->
+    <TabBar>
+        <!--<Tab
+            Title="m">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
+        </Tab>-->
+
+        <Tab
+            Title="Title">
+            <ShellContent ContentTemplate="{DataTemplate views:ScanPage}"/>
+        </Tab>
+
+        <Tab
+            Title="Setting">
+            <ShellContent ContentTemplate="{DataTemplate views:SettingPage}"/>
+        </Tab>
+        
+    </TabBar>
 
 </Shell>

@@ -11,5 +11,7 @@ namespace fast_cf_ip_scanner.ViewModels
         public BaseViewModel() 
         {
         }
+        [ObservableProperty]
+        string title;
     }
 }

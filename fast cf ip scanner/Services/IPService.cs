@@ -11,10 +11,10 @@ using System.Resources;
 
 namespace fast_cf_ip_scanner.Services
 {
-    public class IPServices
+    public class IPService
     {
         private readonly FastCFIPScannerDatabase _db;
-        public IPServices(FastCFIPScannerDatabase db)
+        public IPService(FastCFIPScannerDatabase db)
         {
             _db = db;
         }

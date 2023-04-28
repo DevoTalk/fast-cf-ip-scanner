@@ -1,11 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="fast_cf_ip_scanner.MainPage"
+             x:Class="fast_cf_ip_scanner.Views.ScanPage"
              xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
-             x:DataType="viewmodel:MainPageViewModel"
+             x:DataType="viewmodel:ScanPageViewModel"
              xmlns:services="clr-namespace:fast_cf_ip_scanner.Services"
-             xmlns:model="clr-namespace:fast_cf_ip_scanner.Model">
+             xmlns:model="clr-namespace:fast_cf_ip_scanner.Model"
+             BackgroundColor="Black"
+             >
     <ContentPage.Resources>
         <services:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ContentPage.Resources>
@@ -60,7 +62,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
-            
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

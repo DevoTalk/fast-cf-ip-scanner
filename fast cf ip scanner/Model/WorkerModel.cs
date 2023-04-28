@@ -8,7 +8,7 @@ namespace fast_cf_ip_scanner.Model
 {
     public class WorkerModel
     {
-        public int Url { get; set; }
-        public bool IsSelected { get; set; }
+        public string Url { get; set; }
+        public bool IsEditing { get; set; }
     }
 }

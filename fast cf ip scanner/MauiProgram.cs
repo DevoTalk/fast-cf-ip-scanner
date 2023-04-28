@@ -1,4 +1,5 @@
 ﻿using fast_cf_ip_scanner.Data;
+using fast_cf_ip_scanner.Views;
 
 namespace fast_cf_ip_scanner;
 
@@ -15,13 +16,36 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+
+        #region views
+        
 		builder.Services.AddSingleton<MainPage>();
 		
-		builder.Services.AddSingleton<MainPageViewModel>();
-		
-		builder.Services.AddSingleton<IPServices>();
+		builder.Services.AddSingleton<ScanPage>();
 
-		builder.Services.AddSingleton<FastCFIPScannerDatabase>();
+		builder.Services.AddSingleton<SettingPage>();
+
+        #endregion
+
+        #region ViewModels
+        
+		builder.Services.AddSingleton<ScanPageViewModel>();
+
+        builder.Services.AddSingleton<MainPageViewModel>();
+
+        builder.Services.AddSingleton<SettingViewModel>();
+
+        #endregion
+
+        #region Services
+
+        builder.Services.AddSingleton<IPService>();
+
+        builder.Services.AddSingleton<WorkerService>();
+
+        #endregion
+
+        builder.Services.AddSingleton<FastCFIPScannerDatabase>();
 
         return builder.Build();
 	}
