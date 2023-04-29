@@ -19,8 +19,6 @@ public static class MauiProgram
 
         #region views
         
-		builder.Services.AddSingleton<MainPage>();
-		
 		builder.Services.AddSingleton<ScanPage>();
 
 		builder.Services.AddSingleton<SettingPage>();
@@ -30,8 +28,6 @@ public static class MauiProgram
         #region ViewModels
         
 		builder.Services.AddSingleton<ScanPageViewModel>();
-
-        builder.Services.AddSingleton<MainPageViewModel>();
 
         builder.Services.AddSingleton<SettingViewModel>();
 
