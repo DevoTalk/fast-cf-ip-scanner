@@ -6,14 +6,17 @@
              x:DataType="viewmodel:ScanPageViewModel"
              xmlns:services="clr-namespace:fast_cf_ip_scanner.Services"
              xmlns:model="clr-namespace:fast_cf_ip_scanner.Model"
-             BackgroundColor="Black"
-             >
+             BackgroundColor="Black">
+
+
+
     <ContentPage.Resources>
         <services:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ContentPage.Resources>
-    <ScrollView>
 
-        <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="10">
 
             <Grid
                 RowDefinitions="1*,1*,100*"
@@ -61,8 +64,8 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
 
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
