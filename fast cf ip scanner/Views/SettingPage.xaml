@@ -7,7 +7,7 @@
              BackgroundColor="Black"
              xmlns:model="clr-namespace:fast_cf_ip_scanner.Model">
     <VerticalStackLayout 
-        Padding="20"\>
+        Padding="20">
         <Grid
                 RowDefinitions="1*,1*,100*"
                 ColumnDefinitions=".80*,.20*"
