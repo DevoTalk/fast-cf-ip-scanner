@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace fast_cf_ip_scanner.Services
@@ -25,6 +26,23 @@ namespace fast_cf_ip_scanner.Services
         public async Task DeleteWorker(WorkerModel worker)
         {
            await _db.DeleteWorker(worker);
+        }
+        public async Task<bool> isValidWorkerUrl(string workerUrl)
+        {
+            if (workerUrl == null)
+            {
+                await App.Current.MainPage.DisplayAlert("error", "worker URL is empity", "OK");
+                return false;
+            }
+
+            string pattern = @"^https:\/\/([a-z0-9]+(-[a-z0-9]+)*\.)*workers\.dev\/?$";
+            Regex regex = new Regex(pattern);
+            if (!regex.IsMatch(workerUrl))
+            {
+                await App.Current.MainPage.DisplayAlert("error", "worker URL is not mach with pattern", "OK");
+                return false;
+            }
+            return true;
         }
     }
 }

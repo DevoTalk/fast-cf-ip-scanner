@@ -23,7 +23,7 @@ namespace fast_cf_ip_scanner.ViewModels
             this.Title = "scan";
 
         }
-
+        
 
         [RelayCommand]
         async void GetValidIPs()

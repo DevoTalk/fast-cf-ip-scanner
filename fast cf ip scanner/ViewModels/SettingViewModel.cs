@@ -39,28 +39,11 @@ namespace fast_cf_ip_scanner.ViewModels
         async void AddNewWorkerUrl()
         {
 
-            if (await isValidWorkerUrl(NewWorkerUrl))
+            if (await _services.isValidWorkerUrl(NewWorkerUrl))
             {
                 _services.AddWorker(NewWorkerUrl);
             }
             await LoadWorkers();
-        }
-         async Task<bool> isValidWorkerUrl(string workerUrl)
-        {
-            if (workerUrl == null)
-            {
-                await App.Current.MainPage.DisplayAlert("error", "worker URL is empity", "OK");
-                return false;
-            }
-
-            string pattern = @"^https:\/\/([a-z0-9]+(-[a-z0-9]+)*\.)*workers\.dev\/?$";
-            Regex regex = new Regex(pattern);
-            if (!regex.IsMatch(workerUrl))
-            {
-                await App.Current.MainPage.DisplayAlert("error", "worker URL is not mach with pattern", "OK");
-                return false;
-            }
-            return true;
         }
     }
 }
