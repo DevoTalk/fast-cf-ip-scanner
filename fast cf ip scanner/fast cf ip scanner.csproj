@@ -57,6 +57,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\scan.svg" />
+	  <None Remove="Resources\Images\setting.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />

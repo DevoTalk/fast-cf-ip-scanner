@@ -21,12 +21,14 @@
         </Tab>-->
 
         <Tab
-            Title="Title">
+            Title="Scan"
+            Icon="scan.png">
             <ShellContent ContentTemplate="{DataTemplate views:ScanPage}"/>
         </Tab>
 
         <Tab
-            Title="Setting">
+            Title="Setting"
+            Icon="setting.png">
             <ShellContent ContentTemplate="{DataTemplate views:SettingPage}"/>
         </Tab>
         
