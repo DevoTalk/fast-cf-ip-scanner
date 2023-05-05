@@ -1,5 +1,5 @@
 ﻿
-using System.Linq;
+using fast_cf_ip_scanner.Views;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -88,13 +88,23 @@ namespace fast_cf_ip_scanner.ViewModels
             if (ipModel != null)
             {
                 var workers = await _workerServices.GetWorkers();
-                string[] workersForShow = new string[workers.Count + 1];
+
+                string[] workersForShow;
+                if(workers.Count == 0)
+                {
+                    workersForShow = new string[2];
+                    workersForShow[1] = "Please add a worker";
+                }
+                else
+                {
+                    workersForShow = new string[workers.Count + 1];
+                }
                 workersForShow[0] = "Copy";
+                
                 for (int i = 1; i <= workers.Count; i++)
                 {
                     workersForShow[i] = workers[i-1].Url;
                 }
-
                 var reslut = await App.Current.MainPage.DisplayActionSheet($"What to Do With {ipModel.IP}", null, null, workersForShow); ;
 
                 if (reslut != null)
@@ -103,6 +113,11 @@ namespace fast_cf_ip_scanner.ViewModels
                     {
                         await Clipboard.SetTextAsync(ipModel.IP);
                         await App.Current.MainPage.DisplayAlert("Copied", $"the {ipModel.IP} is copied", "OK");
+                    }
+                    else if(reslut == "Please add a worker")
+                    {
+                        await Shell.Current.GoToAsync(nameof(SettingPage));
+                        return;
                     }
                     else
                     {
