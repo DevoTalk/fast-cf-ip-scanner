@@ -90,12 +90,12 @@ namespace fast_cf_ip_scanner.ViewModels
                 var workers = await _workerServices.GetWorkers();
                 string[] workersForShow = new string[workers.Count + 1];
                 workersForShow[0] = "Copy";
-                for (int i = 1; i < workers.Count; i++)
+                for (int i = 1; i <= workers.Count; i++)
                 {
-                    workersForShow[i] = workers[i].Url;
+                    workersForShow[i] = workers[i-1].Url;
                 }
 
-                var reslut = await App.Current.MainPage.DisplayActionSheet(null, null, null, workersForShow); ;
+                var reslut = await App.Current.MainPage.DisplayActionSheet($"What to Do With {ipModel.IP}", null, null, workersForShow); ;
 
                 if (reslut != null)
                 {
@@ -106,8 +106,15 @@ namespace fast_cf_ip_scanner.ViewModels
                     }
                     else
                     {
+                        StartBtnEnable = false;
+                        IsBusy = true;
+
                         var config = await _workerServices.GetConfigFromWorker(reslut, ipModel.IP);
-                        if(config != string.Empty)
+
+                        StartBtnEnable = true;
+                        IsBusy = false;
+
+                        if (config != string.Empty)
                         {
                             await Clipboard.SetTextAsync(ipModel.IP);
                             await App.Current.MainPage.DisplayAlert("Copied", $"the Configs is copied", "OK");
