@@ -1,4 +1,6 @@
 ﻿
+using System.Linq;
+
 namespace fast_cf_ip_scanner.ViewModels
 {
     public partial class ScanPageViewModel : BaseViewModel
@@ -16,10 +18,14 @@ namespace fast_cf_ip_scanner.ViewModels
         bool isBusy;
 
         readonly IPService _iPServices;
-        public ScanPageViewModel(IPService iPServices)
+        readonly WorkerService _workerServices;
+        public ScanPageViewModel(IPService iPServices,WorkerService workerService)
         {
             validIPs = new ObservableCollection<IPModel>();
+            
             _iPServices = iPServices;
+            _workerServices = workerService;
+
             this.Title = "scan";
 
         }
@@ -28,22 +34,33 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async void GetValidIPs()
         {
+
             StartBtnEnable = false;
+
             IsBusy = true;
+
             List<IPModel> validIp = new List<IPModel>();
+
             ValidIPs.Clear();
+
             var maxping = ConvertMaxPingOfIPToInt(MaxPingOfIP);
+
             while (validIp.Count == 0)
             {
                 validIp.AddRange(await _iPServices.GetIpValid(maxping));
             }
+
             validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));
+
             foreach (var ip in validIp)
             {
                 ValidIPs.Add(ip);
             }
+
             IsBusy = false;
+
             StartBtnEnable = true;
+
         }
         int ConvertMaxPingOfIPToInt(string maxPing)
         {
@@ -70,10 +87,38 @@ namespace fast_cf_ip_scanner.ViewModels
         {
             if (ipModel != null)
             {
-                await Clipboard.SetTextAsync(ipModel.IP);
-                await App.Current.MainPage.DisplayAlert("Copied", $"the {ipModel.IP} is copied", "OK");
-            }
+                var workers = await _workerServices.GetWorkers();
+                string[] workersForShow = new string[workers.Count + 1];
+                workersForShow[0] = "Copy";
+                for (int i = 1; i < workers.Count; i++)
+                {
+                    workersForShow[i] = workers[i].Url;
+                }
 
+                var reslut = await App.Current.MainPage.DisplayActionSheet(null, null, null, workersForShow); ;
+
+                if (reslut != null)
+                {
+                    if (reslut == "Copy")
+                    {
+                        await Clipboard.SetTextAsync(ipModel.IP);
+                        await App.Current.MainPage.DisplayAlert("Copied", $"the {ipModel.IP} is copied", "OK");
+                    }
+                    else
+                    {
+                        var config = await _workerServices.GetConfigFromWorker(reslut, ipModel.IP);
+                        if(config != string.Empty)
+                        {
+                            await Clipboard.SetTextAsync(ipModel.IP);
+                            await App.Current.MainPage.DisplayAlert("Copied", $"the Configs is copied", "OK");
+                        }
+                        else
+                        {
+                            await App.Current.MainPage.DisplayAlert("Erorr", $"have a erorr try agane", "OK");
+                        }
+                    }
+                }
+            }
         }
     }
 }

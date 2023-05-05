@@ -41,9 +41,11 @@ namespace fast_cf_ip_scanner.ViewModels
 
             if (await _services.isValidWorkerUrl(NewWorkerUrl))
             {
-                _services.AddWorker(NewWorkerUrl);
+                var workerUrl = NewWorkerUrl.Replace("https://", "").Replace("http://", "").Replace(".dev/", ".dev");
+                _services.AddWorker(workerUrl);
+                NewWorkerUrl = string.Empty;
+                await LoadWorkers();
             }
-            await LoadWorkers();
         }
     }
 }

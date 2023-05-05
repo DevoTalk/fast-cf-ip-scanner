@@ -35,14 +35,31 @@ namespace fast_cf_ip_scanner.Services
                 return false;
             }
 
-            string pattern = @"^https:\/\/([a-z0-9]+(-[a-z0-9]+)*\.)*workers\.dev\/?$";
-            Regex regex = new Regex(pattern);
-            if (!regex.IsMatch(workerUrl))
-            {
-                await App.Current.MainPage.DisplayAlert("error", "worker URL is not mach with pattern", "OK");
-                return false;
-            }
+            //string pattern = @"^https:\/\/([a-z0-9]+(-[a-z0-9]+)*\.)*workers\.dev\/?$";
+            //Regex regex = new Regex(pattern);
+            //if (!regex.IsMatch(workerUrl))
+            //{
+            //    await App.Current.MainPage.DisplayAlert("error", "worker URL is not mach with pattern", "OK");
+            //    return false;
+            //}
             return true;
+        }
+
+        public async Task<string> GetConfigFromWorker(string workerUrl,string ip)
+        {
+            HttpClient client = new HttpClient()
+            {
+                Timeout = TimeSpan.FromSeconds(10000),
+            };
+            var url = "https://" + workerUrl + "/sub/" + ip;
+            try
+            {
+                var config = await client.GetStringAsync(url);
+                return config;
+            }catch
+            {
+                return string.Empty;
+            }
         }
     }
 }
