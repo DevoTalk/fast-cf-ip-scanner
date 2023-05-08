@@ -19,8 +19,8 @@ namespace fast_cf_ip_scanner.Services
             _db = db;
         }
 
-        
-        public async Task<List<IPModel>> GetIpValid(int maxPing)
+
+        public async Task<List<IPModel>> GetIpValid(string[]ips,int maxPing)
         {
             SocketsHttpHandler SocketsHandler = new SocketsHttpHandler();
             HttpClient Client = new HttpClient(SocketsHandler)
@@ -28,19 +28,19 @@ namespace fast_cf_ip_scanner.Services
                 Timeout = TimeSpan.FromSeconds(maxPing),
             };
 
-            var IpAddresses = await _db.GetAllIPs();
+            
             var validIp = new List<IPModel>();
             for (int i = 0; i < 20; i++)
             {
                 var t = new Task(async () =>
                 {
                     var stopwatch = new Stopwatch();
-                    var ipAddresse = GetRandomIp(IpAddresses);
+                    var ipAddresse = GetRandomIp(ips);
                     HttpResponseMessage result = new HttpResponseMessage();
                     try
                     {
                         stopwatch.Start();
-                        result = await Client.GetAsync($"http://{ipAddresse}");
+                        result = await Client.GetAsync($"http://{ipAddresse}/__down");
                         stopwatch.Stop();
                         var ping = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
 
@@ -60,7 +60,7 @@ namespace fast_cf_ip_scanner.Services
                 });
                 t.Start();
             }
-            for (int i = 0;i < maxPing/100; i++)
+            for (int i = 0; i < maxPing / 100; i++)
             {
                 await Task.Delay(100);
                 if (validIp.Count >= 10)
@@ -70,10 +70,27 @@ namespace fast_cf_ip_scanner.Services
             }
             return validIp;
         }
-        string GetRandomIp(List<IPModel> ips)
+
+        public async Task<string[]> GetIps()
+        {
+            var IpAddresses = await _db.GetAllIPs();
+            return IpAddresses;
+        }
+        string GetRandomIp(string[] ips)
         {
             Random random = new Random();
-            return ips[random.Next(ips.Count)].IP;
+            return ips[random.Next(ips.Length)];
+        }
+        public async Task addValidIpToDb(IPModel ip)
+        {
+            await _db.AddIP(ip);
+        }
+        public async Task addValidIpToDb(List<IPModel> ips)
+        {
+            foreach (var ip in ips)
+            {
+                await _db.AddIP(ip);
+            }
         }
     }
 }

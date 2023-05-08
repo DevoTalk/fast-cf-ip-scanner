@@ -44,19 +44,26 @@ namespace fast_cf_ip_scanner.ViewModels
             ValidIPs.Clear();
 
             var maxping = ConvertMaxPingOfIPToInt(MaxPingOfIP);
-
-            while (validIp.Count == 0)
+            var ips = await _iPServices.GetIps();
+            if (ips.Length < 1)
             {
-                validIp.AddRange(await _iPServices.GetIpValid(maxping));
+                await App.Current.MainPage.DisplayAlert("Erorr", $"have a erorr try agane", "OK");
             }
-
-            validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));
-
-            foreach (var ip in validIp)
+            else
             {
-                ValidIPs.Add(ip);
-            }
+                while (validIp.Count == 0)
+                {
+                    validIp.AddRange(await _iPServices.GetIpValid(ips, maxping));
+                }
 
+                validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));
+
+                foreach (var ip in validIp)
+                {
+                    ValidIPs.Add(ip);
+                }
+                await _iPServices.addValidIpToDb(validIp);
+            }
             IsBusy = false;
 
             StartBtnEnable = true;
@@ -111,8 +118,9 @@ namespace fast_cf_ip_scanner.ViewModels
                 {
                     if (reslut == "Copy")
                     {
-                        await Clipboard.SetTextAsync(ipModel.IP);
-                        await App.Current.MainPage.DisplayAlert("Copied", $"the {ipModel.IP} is copied", "OK");
+                        var ip = ipModel.IP.Split("/")[0];
+                        await Clipboard.SetTextAsync(ip);
+                        await App.Current.MainPage.DisplayAlert("Copied", $"the {ip} is copied", "OK");
                     }
                     else if(reslut == "Please add a worker")
                     {
@@ -131,7 +139,7 @@ namespace fast_cf_ip_scanner.ViewModels
 
                         if (config != string.Empty)
                         {
-                            await Clipboard.SetTextAsync(ipModel.IP);
+                            await Clipboard.SetTextAsync(config);
                             await App.Current.MainPage.DisplayAlert("Copied", $"the Configs is copied", "OK");
                         }
                         else
