@@ -16,7 +16,7 @@ namespace fast_cf_ip_scanner.ViewModels
 
         [ObservableProperty]
         bool isBusy;
-
+        
         readonly IPService _iPServices;
         readonly WorkerService _workerServices;
         public ScanPageViewModel(IPService iPServices,WorkerService workerService)
@@ -29,12 +29,16 @@ namespace fast_cf_ip_scanner.ViewModels
             this.Title = "scan";
 
         }
-        
+
 
         [RelayCommand]
         async void GetValidIPs()
         {
-
+            var protocol = await App.Current.MainPage.DisplayActionSheet("which protocol", "Cancel", null,new string[]{"Http test","TCP test"});
+            if(protocol == "Cancel" || protocol ==null)
+            {
+                return;
+            }
             StartBtnEnable = false;
 
             IsBusy = true;
@@ -53,7 +57,7 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 while (validIp.Count == 0)
                 {
-                    validIp.AddRange(await _iPServices.GetIpValid(ips, maxping));
+                    validIp.AddRange(await _iPServices.GetIpValid(ips, maxping,protocol));
                 }
 
                 validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));
@@ -112,7 +116,7 @@ namespace fast_cf_ip_scanner.ViewModels
                 {
                     workersForShow[i] = workers[i-1].Url;
                 }
-                var reslut = await App.Current.MainPage.DisplayActionSheet($"What to Do With {ipModel.IP}", null, null, workersForShow); ;
+                var reslut = await App.Current.MainPage.DisplayActionSheet($"What to Do With {ipModel.IP}", null, null, workersForShow);
 
                 if (reslut != null)
                 {
