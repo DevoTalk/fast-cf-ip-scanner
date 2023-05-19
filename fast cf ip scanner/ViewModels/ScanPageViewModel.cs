@@ -11,8 +11,6 @@ namespace fast_cf_ip_scanner.ViewModels
         [ObservableProperty]
         string maxPingOfIP;
 
-        [ObservableProperty]
-        bool startBtnEnable;
 
         [ObservableProperty]
         bool isBusy;
@@ -26,7 +24,6 @@ namespace fast_cf_ip_scanner.ViewModels
             _iPServices = iPServices;
             _workerServices = workerService;
 
-            this.Title = "scan";
 
         }
 
@@ -39,7 +36,6 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 return;
             }
-            StartBtnEnable = false;
 
             IsBusy = true;
 
@@ -70,7 +66,6 @@ namespace fast_cf_ip_scanner.ViewModels
             }
             IsBusy = false;
 
-            StartBtnEnable = true;
 
         }
         int ConvertMaxPingOfIPToInt(string maxPing)
@@ -133,12 +128,10 @@ namespace fast_cf_ip_scanner.ViewModels
                     }
                     else
                     {
-                        StartBtnEnable = false;
                         IsBusy = true;
 
                         var config = await _workerServices.GetConfigFromWorker(reslut, ipModel.IP);
 
-                        StartBtnEnable = true;
                         IsBusy = false;
 
                         if (config != string.Empty)
