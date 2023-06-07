@@ -8,6 +8,23 @@
              xmlns:model="clr-namespace:fast_cf_ip_scanner.Model">
     <VerticalStackLayout 
         Padding="20">
+        <Label Text="for make worker go to " />
+        <Label Text="cloudflare.com"
+                TextColor="Blue">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OpenLinkCommand}"
+                                       CommandParameter="https://www.cloudflare.com/"/>
+            </Label.GestureRecognizers>
+        </Label>
+
+        <Label Text="and use " />
+        <Label Text="this repo"
+                TextColor="Blue">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OpenLinkCommand}"
+                                       CommandParameter="https://github.com/vfarid/v2ray-worker-sub/"/>
+            </Label.GestureRecognizers>
+        </Label>
         <Grid
                 RowDefinitions="1*,1*,100*"
                 ColumnDefinitions=".80*,.20*"
@@ -29,9 +46,9 @@
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand">
             </Button>
-            
+
         </Grid>
-        
+
         <ScrollView>
             <CollectionView ItemsSource="{Binding Workers}">
                 <CollectionView.ItemTemplate>

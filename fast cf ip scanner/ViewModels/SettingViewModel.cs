@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -33,6 +33,13 @@ namespace fast_cf_ip_scanner.ViewModels
         {
             await _services.DeleteWorker(worker);
             await LoadWorkers();
+        }
+
+
+        [RelayCommand]
+        async Task OpenLink(string url)
+        {
+            await Launcher.OpenAsync(url);
         }
 
         [RelayCommand]

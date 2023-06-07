@@ -1,4 +1,5 @@
 ﻿
+using CommunityToolkit.Mvvm.Input;
 using fast_cf_ip_scanner.Views;
 
 namespace fast_cf_ip_scanner.ViewModels
