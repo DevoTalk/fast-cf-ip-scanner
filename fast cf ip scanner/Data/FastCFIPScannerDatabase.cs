@@ -15,7 +15,7 @@ namespace fast_cf_ip_scanner.Data
             DataBase = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
             await DataBase.CreateTableAsync<IPModel>();
             await DataBase.CreateTableAsync<WorkerModel>();
-            
+
         }
         public async Task<string[]> GetAllIPs()
         {
@@ -23,11 +23,21 @@ namespace fast_cf_ip_scanner.Data
             {
                 return ipList;
             }
+
+            string[] urls = new string[] { "https://getip.ali1707.workers.dev", "https://raw.githubusercontent.com/Ali1707/cloudflare-ips/main/ips.txt" };
+
             HttpClient client = new HttpClient();
-            
+
+            var tasks = new Task<string>[urls.Length];
+
             try
             {
-                var stringIP = await client.GetStringAsync("https://getip.ali1707.workers.dev");
+                for (int i = 0; i < urls.Length; i++)
+                {
+                    tasks[i] = client.GetStringAsync(urls[i]);
+                }
+                var completedTask = await Task.WhenAny(tasks);
+                var stringIP = completedTask.Result;
 
                 var ips = stringIP.Split(",");
 
@@ -37,7 +47,7 @@ namespace fast_cf_ip_scanner.Data
             }
             catch (Exception ex)
             {
-                return new string[0];  
+                return new string[0];
             }
         }
         public async Task AddIP(IPModel ip)
@@ -57,8 +67,8 @@ namespace fast_cf_ip_scanner.Data
         }
         public async Task DeleteWorker(WorkerModel worker)
         {
-           await Init();
-           await DataBase.Table<WorkerModel>().Where(w => w.Url == worker.Url).DeleteAsync();
+            await Init();
+            await DataBase.Table<WorkerModel>().Where(w => w.Url == worker.Url).DeleteAsync();
         }
     }
 }
