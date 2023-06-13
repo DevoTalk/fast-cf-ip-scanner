@@ -90,8 +90,19 @@ namespace fast_cf_ip_scanner.ViewModels
         }
 
         [RelayCommand]
-        async Task CopySelectedIPAsync(IPModel ipModel)
+        async Task ShowSelectedIPOption(IPModel ipModel)
         {
+            var workerss = await _workerServices.GetWorkers();
+
+            ConfigService a = new();
+            var confUrl = a.ConfigProviders.Last();
+            var confs = await a.GetConfig(confUrl);
+            var filteredconfs = a.FilteredVmessVlessTrojanConfigs(confs);
+            var encodingConfs = a.DecodeConfig(filteredconfs);
+            foreach(var mix in encodingConfs)
+            {
+                var mixedConfig = a.MixConfig(mix, ipModel.IP, workerss.First().Url);
+            }
             if (ipModel != null)
             {
                 var workers = await _workerServices.GetWorkers();

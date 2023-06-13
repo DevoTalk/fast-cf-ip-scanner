@@ -45,7 +45,7 @@
             <CollectionView ItemsSource="{Binding ValidIPs}" 
                              x:Name="validIPCollectionView"
                             HorizontalOptions="Center"
-                            SelectionChangedCommand ="{Binding CopySelectedIPCommand}"
+                            SelectionChangedCommand ="{Binding ShowSelectedIPOptionCommand}"
                             SelectionChangedCommandParameter="{Binding Source={x:Reference validIPCollectionView}, Path=SelectedItem}"
                             SelectionMode="Single"
                             IsVisible="{Binding IsBusy,Converter={StaticResource InverseBooleanConverter}}">
