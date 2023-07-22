@@ -20,26 +20,37 @@
 
             <Grid
                 RowDefinitions="1*,1*,100*"
-                ColumnDefinitions=".20*,.80*"
+                ColumnDefinitions=".2*,.1*,.1*,.2*"
                 Margin="10">
 
                 <Button Text="start"
                         IsEnabled="{Binding IsBusy,Converter={StaticResource InverseBooleanConverter}}"
                         Grid.Column="0"
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Command="{Binding GetValidIPsCommand}"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand">
                 </Button>
+                <Label 
+                    Text="Max ping"
+                    HorizontalOptions="End"
+                    Grid.Row="0"
+                    Grid.Column="1"/>
+                    
+                 <Label
+                     Grid.Column="2"
+                     Grid.Row="0"
+                     Margin="10,0"
+                     Text="{Binding Source={x:Reference numericStepper}, Path=Value}" />
 
-                <Entry
-                    Grid.Column="1"
+                <Stepper
+                    Increment="100"
+                    Value="{Binding MaxPingOfIP}"
+                    Maximum="10000"
+                    Grid.Column="2"
                     Grid.Row="1"
-                    BackgroundColor="DimGray"
-                    Margin="10"
-                    Placeholder="enter max of ping defalt is 5000"
-                    PlaceholderColor="White"
-                    Text="{Binding MaxPingOfIP}"/>
+                    x:Name="numericStepper"    
+                    />
             </Grid>
 
             <CollectionView ItemsSource="{Binding ValidIPs}" 

@@ -1,14 +1,10 @@
 ﻿
+
 using fast_cf_ip_scanner.Data;
-using fast_cf_ip_scanner.Model;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Net.WebSockets;
-using System.Reflection;
-using System.Resources;
+
 
 namespace fast_cf_ip_scanner.Services
 {
@@ -50,13 +46,15 @@ namespace fast_cf_ip_scanner.Services
         {
             
             var validIp = new List<IPModel>();
-            for (int i = 0; i < 20; i++)
-            {
+
+
+            var randomIps = GetRandomIp(ips);
+            foreach (var ipAddresse in randomIps) 
+            { 
                 var t = new Task(async () =>
                 {
                     var stopwatch = new Stopwatch();
-                    var ipAddresse = IPAddress.Parse(GetRandomIp(ips).Split("/")[0]);
-
+                    
                     try
                     {
                         var SocketsHandler = new SocketsHttpHandler();
@@ -107,12 +105,13 @@ namespace fast_cf_ip_scanner.Services
         {
 
             var validIp = new List<IPModel>();
-            for (int i = 0; i < 20; i++)
+            var randip = GetRandomIp(ips);
+            foreach (var ipAddresse in randip)
             {
                 var t = new Task(() =>
                 {
                     var stopwatch = new Stopwatch();
-                    var ipAddresse = IPAddress.Parse(GetRandomIp(ips).Split("/")[0]);
+                    
                     try
                     {
                         var client = new TcpClient();
@@ -158,12 +157,12 @@ namespace fast_cf_ip_scanner.Services
         {
 
             var validIp = new List<IPModel>();
-            for (int i = 0; i < 20; i++)
+            var randips = GetRandomIp(ips);
+            foreach (var ipAddresse in randips)
             {
                 var t = new Task(() =>
                 {
                     var stopwatch = new Stopwatch();
-                    var ipAddresse = IPAddress.Parse(GetRandomIp(ips).Split("/")[0]);
                     
                     try
                     {
@@ -208,23 +207,43 @@ namespace fast_cf_ip_scanner.Services
 
 
 
+        public List<string> GetRandomIp(string[] ips)
+        {
 
+            Random random = new Random();
+            
+            var randomIpRange = new List<string>();
+            for (int i = 0; i < 4; i++)
+            {
+                var randIp = ips[random.Next(ips.Length)].Split("/")[0].Split(".").ToList();
+                randIp.Remove(randIp.Last());
+                var strIp = string.Join(".", randIp);
+                strIp = strIp + ".";
+
+                randomIpRange.Add(strIp);
+            }
+            var randomIps = new List<string>();
+            foreach (var iprange in randomIpRange)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    randomIps.Add(iprange + random.Next(255));
+                }
+            }
+            return randomIps;
+        }
 
         public async Task<string[]> GetIps()
         {
             var IpAddresses = await _db.GetAllIPs();
             return IpAddresses;
         }
-        string GetRandomIp(string[] ips)
-        {
-            Random random = new Random();
-            return ips[random.Next(ips.Length)];
-        }
-        public async Task addValidIpToDb(IPModel ip)
+       
+        public async Task AddValidIpToDb(IPModel ip)
         {
             await _db.AddIP(ip);
         }
-        public async Task addValidIpToDb(List<IPModel> ips)
+        public async Task AddValidIpToDb(List<IPModel> ips)
         {
             foreach (var ip in ips)
             {

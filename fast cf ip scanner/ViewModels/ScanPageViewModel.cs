@@ -25,7 +25,7 @@ namespace fast_cf_ip_scanner.ViewModels
             _iPServices = iPServices;
             _workerServices = workerService;
 
-
+            maxPingOfIP = "5000";
         }
 
 
@@ -63,7 +63,7 @@ namespace fast_cf_ip_scanner.ViewModels
                 {
                     ValidIPs.Add(ip);
                 }
-                await _iPServices.addValidIpToDb(validIp);
+                await _iPServices.AddValidIpToDb(validIp);
             }
             IsBusy = false;
 
@@ -94,15 +94,6 @@ namespace fast_cf_ip_scanner.ViewModels
         {
             var workerss = await _workerServices.GetWorkers();
 
-            ConfigService a = new();
-            var confUrl = a.ConfigProviders.Last();
-            var confs = await a.GetConfig(confUrl);
-            var filteredconfs = a.FilteredVmessVlessTrojanConfigs(confs);
-            var encodingConfs = a.DecodeConfig(filteredconfs);
-            foreach(var mix in encodingConfs)
-            {
-                var mixedConfig = a.MixConfig(mix, ipModel.IP, workerss.First().Url);
-            }
             if (ipModel != null)
             {
                 var workers = await _workerServices.GetWorkers();
