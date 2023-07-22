@@ -20,7 +20,7 @@
 
             <Grid
                 RowDefinitions="1*,1*,100*"
-                ColumnDefinitions=".2*,.1*,.1*,.2*"
+                ColumnDefinitions=".2*,.1*,.1*,.1*"
                 Margin="10">
 
                 <Button Text="start"
@@ -32,16 +32,18 @@
                         VerticalOptions="FillAndExpand">
                 </Button>
                 <Label 
-                    Text="Max ping"
+                    Text="Max ping :"
                     HorizontalOptions="End"
                     Grid.Row="0"
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    TextColor="White"/>
                     
                  <Label
                      Grid.Column="2"
                      Grid.Row="0"
                      Margin="10,0"
-                     Text="{Binding Source={x:Reference numericStepper}, Path=Value}" />
+                     Text="{Binding Source={x:Reference numericStepper}, Path=Value}" 
+                     TextColor="White"/>
 
                 <Stepper
                     Increment="100"
