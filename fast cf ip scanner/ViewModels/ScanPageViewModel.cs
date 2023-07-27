@@ -48,7 +48,7 @@ namespace fast_cf_ip_scanner.ViewModels
             var ips = await _iPServices.GetIps();
             if (ips.Length < 1)
             {
-                await App.Current.MainPage.DisplayAlert("Erorr", $"have a erorr try agane", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", $"have a erorr try again "OK");
             }
             else
             {
