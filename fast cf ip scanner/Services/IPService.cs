@@ -17,10 +17,10 @@ namespace fast_cf_ip_scanner.Services
         }
 
 
-        public async Task<List<IPModel>> GetIpValid(string[] ips, int maxPing,string protcol)
+        public async Task<List<IPModel>> GetIpValid(string[] ips, int maxPing, string protcol)
         {
             var validIps = new List<IPModel>();
-            switch(protcol)
+            switch (protcol)
             {
 
                 case "Http test":
@@ -36,7 +36,7 @@ namespace fast_cf_ip_scanner.Services
                     break;
 
                 default:
-                    validIps = await GetValidIPWithTCPTest(ips,maxPing);
+                    validIps = await GetValidIPWithTCPTest(ips, maxPing);
                     break;
             }
             return validIps;
@@ -44,17 +44,17 @@ namespace fast_cf_ip_scanner.Services
 
         public async Task<List<IPModel>> GetValidٌIPWithHttpTest(string[] ips, int maxPing)
         {
-            
+
             var validIp = new List<IPModel>();
 
 
             var randomIps = GetRandomIp(ips);
-            foreach (var ipAddresse in randomIps) 
-            { 
+            foreach (var ipAddresse in randomIps)
+            {
                 var t = new Task(async () =>
                 {
                     var stopwatch = new Stopwatch();
-                    
+
                     try
                     {
                         var SocketsHandler = new SocketsHttpHandler();
@@ -62,17 +62,19 @@ namespace fast_cf_ip_scanner.Services
                         {
                             Timeout = TimeSpan.FromSeconds(maxPing),
                         };
+                        int ping = 0;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            stopwatch.Start();
 
 
-                        stopwatch.Start();
+                            var result = await Client.GetAsync($"http://{ipAddresse}/__down");
 
 
-                        var result = await Client.GetAsync($"http://{ipAddresse}/__down");
-
-
-                        stopwatch.Stop();
-                        var ping = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
-
+                            stopwatch.Stop();
+                            ping += Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                        }
+                        ping = ping / 3;
                         lock (validIp)
                         {
                             validIp.Add(new IPModel
@@ -111,7 +113,7 @@ namespace fast_cf_ip_scanner.Services
                 var t = new Task(() =>
                 {
                     var stopwatch = new Stopwatch();
-                    
+
                     try
                     {
                         var client = new TcpClient();
@@ -163,7 +165,7 @@ namespace fast_cf_ip_scanner.Services
                 var t = new Task(() =>
                 {
                     var stopwatch = new Stopwatch();
-                    
+
                     try
                     {
                         var client = new UdpClient();
@@ -211,7 +213,7 @@ namespace fast_cf_ip_scanner.Services
         {
 
             Random random = new Random();
-            
+
             var randomIpRange = new List<string>();
             for (int i = 0; i < 4; i++)
             {
@@ -238,7 +240,7 @@ namespace fast_cf_ip_scanner.Services
             var IpAddresses = await _db.GetAllIPs();
             return IpAddresses;
         }
-       
+
         public async Task AddValidIpToDb(IPModel ip)
         {
             await _db.AddIP(ip);
