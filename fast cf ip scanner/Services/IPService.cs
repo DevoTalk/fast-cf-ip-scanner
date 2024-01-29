@@ -3,6 +3,7 @@
 using fast_cf_ip_scanner.Data;
 using System.Diagnostics;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 
@@ -62,7 +63,7 @@ namespace fast_cf_ip_scanner.Services
                         {
                             Timeout = TimeSpan.FromSeconds(maxPing),
                         };
-                        int ping = 0;
+                        int totalPing = 0;
                         for (int i = 0; i < 3; i++)
                         {
                             stopwatch.Start();
@@ -72,9 +73,10 @@ namespace fast_cf_ip_scanner.Services
 
 
                             stopwatch.Stop();
-                            ping += Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                            var currentPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                            totalPing += currentPing;
                         }
-                        ping = ping / 3;
+                        int ping = totalPing / 3;
                         lock (validIp)
                         {
                             validIp.Add(new IPModel
@@ -117,17 +119,21 @@ namespace fast_cf_ip_scanner.Services
                     try
                     {
                         var client = new TcpClient();
+                        var totalPing = 0;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            stopwatch.Start();
 
-                        stopwatch.Start();
+
+                            client.Connect(ipAddresse, 443);
 
 
-                        client.Connect(ipAddresse, 443);
+                            stopwatch.Stop();
 
-
-                        stopwatch.Stop();
-
-                        var ping = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
-
+                            var courrentPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                            totalPing += courrentPing;
+                        }
+                        var ping = totalPing / 3;
                         lock (validIp)
                         {
                             validIp.Add(new IPModel
@@ -252,11 +258,5 @@ namespace fast_cf_ip_scanner.Services
                 await _db.AddIP(ip);
             }
         }
-
-
-
-
-
-
     }
 }

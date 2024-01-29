@@ -1,4 +1,5 @@
-﻿
+﻿using Microsoft.Maui.ApplicationModel;
+
 
 namespace fast_cf_ip_scanner.ViewModels
 {

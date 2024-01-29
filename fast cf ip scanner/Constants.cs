@@ -1,4 +1,5 @@
-﻿namespace fast_cf_ip_scanner
+﻿using Microsoft.Maui.Storage;
+namespace fast_cf_ip_scanner
 {
     public static class Constants
     {
