@@ -50,6 +50,7 @@ namespace fast_cf_ip_scanner.Data
                 return new string[0];
             }
         }
+
         public async Task AddIP(IPModel ip)
         {
             await Init();
