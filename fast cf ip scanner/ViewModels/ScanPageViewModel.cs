@@ -26,7 +26,7 @@ namespace fast_cf_ip_scanner.ViewModels
             _iPServices = iPServices;
             _workerServices = workerService;
 
-            maxPingOfIP = "5000";
+            maxPingOfIP = "1000";
         }
 
 

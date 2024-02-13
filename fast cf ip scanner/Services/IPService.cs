@@ -49,61 +49,86 @@ namespace fast_cf_ip_scanner.Services
 
             var validIp = new List<IPModel>();
 
-
-            var randomIps = GetRandomIp(ips);
-            foreach (var ipAddresse in randomIps)
+            async Task HttpTest(string ipAddresse)
             {
-                var t = new Task(async () =>
+                var stopwatch = new Stopwatch();
+
+                var SocketsHandler = new SocketsHttpHandler();
+                var Client = new HttpClient(SocketsHandler)
                 {
-                    var stopwatch = new Stopwatch();
+                    Timeout = TimeSpan.FromSeconds(maxPing),
+                };
+
+                var randomPorts = GetRandomPort();
+                int totalPing = 0;
+                var ports = new List<string>();
+                var ipIsConnected = false;
+
+                foreach (var port in randomPorts)
+                {
 
                     try
                     {
-                        var SocketsHandler = new SocketsHttpHandler();
-                        var Client = new HttpClient(SocketsHandler)
+                        stopwatch.Start();
+                        var result = await Client.GetAsync($"http://{ipAddresse}/__down:{port}");
+                        stopwatch.Stop();
+
+                        if (result != null) 
                         {
-                            Timeout = TimeSpan.FromSeconds(maxPing),
-                        };
-                        int totalPing = 0;
-                        var randomPorts = GetRandomPort();
-                        foreach (var port in randomPorts)
-                        {
-                            stopwatch.Start();
-
-
-                            var result = await Client.GetAsync($"http://{ipAddresse}/__down:{port}");
-
-
-                            stopwatch.Stop();
-                            var currentPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
-                            totalPing += currentPing;
-                        }
-                        int ping = totalPing / 3;
-                        lock (validIp)
-                        {
-                            validIp.Add(new IPModel
-                            {
-                                IP = ipAddresse.ToString(),
-                                Ping = ping,
-                            });
+                            ipIsConnected = true;
+                            ports.Add(port);
                         }
                     }
                     catch
                     {
-                        stopwatch.Reset();
+                        ipIsConnected = false;
+                        stopwatch.Stop();
                     }
-                });
-                t.Start();
+
+
+                    var currentPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                    totalPing += currentPing;
+                }
+                int ping = totalPing / 3;
+                if (ipIsConnected)
+                {
+                    lock (validIp)
+                    {
+                        validIp.Add(new IPModel
+                        {
+                            IP = ipAddresse.ToString(),
+                            Ping = ping,
+                            Ports = string.Join(",", ports)
+                        });
+                    }
+                }
+
             }
-            for (int i = 0; i < maxPing * 2 / 100; i++)
+            #region repeat test
+            while (true)
             {
-                await Task.Delay(100);
                 if (validIp.Count >= 5)
                 {
                     return validIp;
                 }
+                var newRandomIps = GetRandomIp(ips);
+
+                List<Task> tasks = new List<Task>();
+
+                foreach (var ip in newRandomIps)
+                {
+                    tasks.Add(HttpTest(ip));
+                }
+                for (int i = 0; i < maxPing / 100; i++)
+                {
+                    await Task.Delay(100);
+                    if (validIp.Count >= 5)
+                    {
+                        return validIp;
+                    }
+                }
             }
-            return validIp;
+            #endregion
         }
 
         public async Task<List<IPModel>> GetValidIPWithTCPTest(string[] ips, int maxPing)
@@ -113,27 +138,39 @@ namespace fast_cf_ip_scanner.Services
 
             async Task TestConnectionAsync(string ip)
             {
-                TcpClient tcpClient = new TcpClient();
-                var randomPort = GetRandomPort(1);
-                try
+                var randomPort = GetRandomPort();
+                var ports = new List<string>();
+                var ipIsConnected = false;
+                foreach (var port in randomPort)
                 {
-                    tcpClient.ConnectAsync(ip, int.Parse(randomPort.First()));
-                    await Task.Delay(maxPing);
-                    if (tcpClient.Connected)
+                    try
                     {
-                        lock (validIp)
+                        TcpClient tcpClient = new TcpClient();
+                        tcpClient.ConnectAsync(ip, int.Parse(port));
+                        await Task.Delay(maxPing);
+                        if (tcpClient.Connected)
                         {
-                            validIp.Add(new IPModel
-                            {
-                                IP = ip,
-                                Ping = 0,
-                            });
+                            ipIsConnected = true;
+                            ports.Add(port);
                         }
                     }
-                }
-                catch
-                {
+                    catch
+                    {
 
+                    }
+                }
+
+                if (ipIsConnected)
+                {
+                    lock (validIp)
+                    {
+                        validIp.Add(new IPModel
+                        {
+                            IP = ip,
+                            Ping = 0,
+                            Ports = string.Join(",", ports)
+                        });
+                    }
                 }
             }
             while (true)
@@ -238,16 +275,16 @@ namespace fast_cf_ip_scanner.Services
             }
             return randomIps;
         }
-        public List<string> GetRandomPort(int count = 3)
+        public string[] GetRandomPort(int count = 3)
         {
             Random random = new Random();
-            var randomPorts = new List<string>();
+            string[] randomPorts = new string[count];
             var allPorts = Constants.HttpPorts.Concat(Constants.HttpsPorts).ToList();
 
             for (int i = 0; i < count; i++)
             {
                 int randomIndex = random.Next(allPorts.Count);
-                randomPorts.Add(allPorts[randomIndex]);
+                randomPorts[i] = allPorts[randomIndex];
             }
             return randomPorts;
         }

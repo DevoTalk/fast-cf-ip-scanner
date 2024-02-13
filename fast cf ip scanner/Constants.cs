@@ -13,8 +13,9 @@ namespace fast_cf_ip_scanner
             SQLite.SQLiteOpenFlags.Create |
             // enable multi-threaded database access
             SQLite.SQLiteOpenFlags.SharedCache;
+        
         public static string DatabasePath =>
-            Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
+            Path.Combine("C:\\Users\\azata\\Desktop\\db test", DatabaseFilename);
 
         public static List<string> HttpPorts
         {

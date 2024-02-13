@@ -11,11 +11,13 @@ namespace fast_cf_ip_scanner.Model
 {
     public class IPModel
     {
-        [PrimaryKey,AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        
+
         public string IP { get; set; }
-        
+
         public int Ping { get; set; }
+
+        public string Ports {  get; set; }
     }
 }

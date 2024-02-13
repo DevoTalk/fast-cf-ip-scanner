@@ -74,6 +74,10 @@
                                    TextColor="White"></Label>
                             <Label Text="{Binding Ping}"
                                    TextColor="White"></Label>
+                            <Label Text="  ping :  "
+                                    TextColor="White"></Label>
+                            <Label Text="{Binding Ports}"
+                                    TextColor="White"></Label>
                         </HorizontalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

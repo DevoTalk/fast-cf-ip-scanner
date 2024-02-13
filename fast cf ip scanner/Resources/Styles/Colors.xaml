@@ -41,4 +41,10 @@
     <Color x:Key="Blue200Accent">#72ACF1</Color>
     <Color x:Key="Blue300Accent">#A7CBF6</Color>
 
+
+    <Color x:Key="PrimaryTextColorDarkMode">#fff</Color>
+    <Color x:Key="SecondaryTextColorDarkMode">#ddd</Color>
+    <Color x:Key="DarkGrayBackgroundColor">#333333</Color>
+    <Color x:Key="DarkCardBackgroundColor">#444444</Color>
+    <Color x:Key="BorderColorDarkMode">#555555</Color>
 </ResourceDictionary>
