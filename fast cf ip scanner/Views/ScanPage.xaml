@@ -55,11 +55,11 @@
                         <StackLayout Padding="15"
                                      Orientation="Horizontal"
                                      Spacing="10">
-                            <Label Text="ip : " TextColor="White" />
+                            <Label Text="ip :" TextColor="White" />
                             <Label Text="{Binding IP}" TextColor="White" />
-                            <Label Text="ping : " TextColor="White" />
+                            <Label Text="ping :" TextColor="White" />
                             <Label Text="{Binding Ping}" TextColor="White" />
-                            <Label Text="ports : " TextColor="White" />
+                            <Label Text="ports :" TextColor="White" />
                             <Label Text="{Binding Ports}" TextColor="White" />
                             
                         </StackLayout>

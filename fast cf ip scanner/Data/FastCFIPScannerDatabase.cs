@@ -11,8 +11,7 @@ namespace fast_cf_ip_scanner.Data
         {
             if (DataBase is not null)
                 return;
-            
-            DataBase = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+            DataBase = new SQLiteAsyncConnection(Constants.GetDatabasePath(), Constants.Flags);
             await DataBase.CreateTableAsync<IPModel>();
             await DataBase.CreateTableAsync<WorkerModel>();
 

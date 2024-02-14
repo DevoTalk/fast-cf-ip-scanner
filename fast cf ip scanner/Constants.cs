@@ -13,10 +13,33 @@ namespace fast_cf_ip_scanner
             SQLite.SQLiteOpenFlags.Create |
             // enable multi-threaded database access
             SQLite.SQLiteOpenFlags.SharedCache;
-        
-        public static string DatabasePath =>
-            Path.Combine("C:\\Users\\azata\\Desktop\\db test", DatabaseFilename);
+        //#if WINDOWS
+        //        public static string DatabasePath =>
+        //            Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"fast cf ip scanner", DatabaseFilename);
+        //#endif
+        //#if ANDROID
+        //        public static string DatabasePath =>
+        //            Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DatabaseFilename);
+        //#endif
+        public static string GetDatabasePath()
+        {
+#if WINDOWS
+        string platformFolder = "Fast-CF-IP-Scanner";
+#else
+            string platformFolder = ""; // Adjust if needed for Android
 
+#endif
+
+            string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), platformFolder);
+            string databasePath = Path.Combine(appDataPath, DatabaseFilename);
+
+            if (!Directory.Exists(appDataPath))
+            {
+                Directory.CreateDirectory(appDataPath);
+            }
+
+            return databasePath;
+        }
         public static List<string> HttpPorts
         {
             get
