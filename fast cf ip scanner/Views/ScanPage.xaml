@@ -15,7 +15,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="20">
 
-            <Grid RowDefinitions="1*,1*,100*" ColumnDefinitions=".2*,.1*,.3*" Margin="10">
+            <Grid RowDefinitions="1*,1*,100*" ColumnDefinitions=".33*,.33*,.33*" Margin="10">
                 <Button Text="Start"
                         IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
                         Grid.Column="0"
@@ -24,21 +24,28 @@
                         Command="{Binding GetValidIPsCommand}"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand" />
-                <Label Text="Max ping:"
+                <!--<Button Text="Stop"
+                        IsEnabled="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Command="{Binding GetValidIPsCommand}"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand" />-->
+                <Label Text="Max ping: "
                        HorizontalOptions="End"
-                       VerticalOptions="Center"
                        Grid.Row="0"
                        Grid.Column="1"
                        TextColor="White" />
                 <Label Grid.Column="2"
                        Grid.Row="0"
-                       Margin="10,0"
                        Text="{Binding Source={x:Reference numericStepper}, Path=Value}"
                        TextColor="White" />
                 <Stepper Increment="100"
                          Value="{Binding MaxPingOfIP}"
                          Maximum="10000"
-                         Grid.Column="2"
+                         Grid.Column="3"
                          Grid.Row="1"
                          x:Name="numericStepper" />
             </Grid>
@@ -52,19 +59,29 @@
                             IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:IPModel">
-                        <StackLayout Padding="15"
-                                     Orientation="Horizontal"
-                                     Spacing="10">
-                            <Label Text="ip :" TextColor="White" />
-                            <Label Text="{Binding IP}" TextColor="White" />
-                            <Label Text="ping :" TextColor="White" />
-                            <Label Text="{Binding Ping}" TextColor="White" />
-                            <Label Text="ports :" TextColor="White" />
-                            <Label Text="{Binding Ports}" TextColor="White" />
-                            
-                        </StackLayout>
+                        <Grid Padding="15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="ip :" TextColor="White" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding IP}" TextColor="White" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="ping :" TextColor="White" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Ping}" TextColor="White" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="ports :" TextColor="White" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ports}" TextColor="White" />
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+
             </CollectionView>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
