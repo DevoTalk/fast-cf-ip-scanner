@@ -10,12 +10,12 @@ namespace fast_cf_ip_scanner.ViewModels
         [ObservableProperty]
         ObservableCollection<IPModel> validIPs;
 
-        [ObservableProperty]
-        string maxPingOfIP;
-
 
         [ObservableProperty]
         bool isBusy;
+
+
+        IpOptionModel _ipOption;
         
         readonly IPService _iPServices;
         readonly WorkerService _workerServices;
@@ -26,7 +26,7 @@ namespace fast_cf_ip_scanner.ViewModels
             _iPServices = iPServices;
             _workerServices = workerService;
 
-            maxPingOfIP = "1000";
+            _ipOption = new IpOptionModel();
         }
 
 
@@ -45,7 +45,7 @@ namespace fast_cf_ip_scanner.ViewModels
 
             ValidIPs.Clear();
 
-            var maxping = ConvertMaxPingOfIPToInt(MaxPingOfIP);
+            var maxping = ConvertMaxPingOfIPToInt(_ipOption.MaxPingOfIP);
             var ips = await _iPServices.GetIps();
             if (ips.Length < 1)
             {
@@ -89,6 +89,12 @@ namespace fast_cf_ip_scanner.ViewModels
             }
 
         }
+        [RelayCommand]
+        async Task ShowOptionsForSearchIp()
+        {
+            await App.Current.MainPage.DisplayActionSheet($"What to Do With","c","a","a");
+        }
+
 
         [RelayCommand]
         async Task ShowSelectedIPOption(IPModel ipModel)

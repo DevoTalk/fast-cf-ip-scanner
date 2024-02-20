@@ -11,44 +11,38 @@
     <ContentPage.Resources>
         <services:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ContentPage.Resources>
-
+    
     <ScrollView>
-        <VerticalStackLayout Padding="10" Spacing="20">
+        
+        <VerticalStackLayout>
 
-            <Grid RowDefinitions="1*,1*,100*" ColumnDefinitions=".33*,.33*,.33*" Margin="10">
-                <Button Text="Start"
-                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
-                        Grid.Column="0"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Command="{Binding GetValidIPsCommand}"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="FillAndExpand" />
-                <!--<Button Text="Stop"
-                        IsEnabled="{Binding IsBusy}"
-                        IsVisible="{Binding IsBusy}"
-                        Grid.Column="0"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Command="{Binding GetValidIPsCommand}"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="FillAndExpand" />-->
-                <Label Text="Max ping: "
-                       HorizontalOptions="End"
-                       Grid.Row="0"
-                       Grid.Column="1"
-                       TextColor="White" />
-                <Label Grid.Column="2"
-                       Grid.Row="0"
-                       Text="{Binding Source={x:Reference numericStepper}, Path=Value}"
-                       TextColor="White" />
-                <Stepper Increment="100"
-                         Value="{Binding MaxPingOfIP}"
-                         Maximum="10000"
-                         Grid.Column="3"
-                         Grid.Row="1"
-                         x:Name="numericStepper" />
+            <Grid 
+                ColumnSpacing="10"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Text="Start"
+                    Style="{StaticResource MyBtn}"
+                    Grid.Column="0" 
+                    Command="{Binding GetValidIPsCommand}"
+                    />
+
+                <Button
+                    Text="Options"
+                    Style="{StaticResource MyBtn}"
+                    Grid.Column="1" 
+                    Command="{Binding ShowOptionsForSearchIpCommand}"
+                    />
+            
             </Grid>
+
+
+
 
             <CollectionView ItemsSource="{Binding ValidIPs}"
                             x:Name="validIPCollectionView"

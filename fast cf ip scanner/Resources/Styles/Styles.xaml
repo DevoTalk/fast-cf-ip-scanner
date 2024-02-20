@@ -4,7 +4,19 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Style TargetType="ActivityIndicator">
+
+    <Style x:Key="MyButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="CornflowerBlue" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+    <Style x:Key="MyBtn" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="DimGray"/>
+        <Setter Property="TextColor" Value="GhostWhite"/>
+    </Style>
+
+        <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
     </Style>
 
