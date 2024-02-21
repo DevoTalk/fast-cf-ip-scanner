@@ -1,9 +1,5 @@
 ﻿
-using AndroidX.Navigation.Fragment;
-using CommunityToolkit.Mvvm.Input;
 using fast_cf_ip_scanner.Views;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
-using Microsoft.Maui.Controls;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -72,11 +68,21 @@ namespace fast_cf_ip_scanner.ViewModels
 
 
         }
+        
+        [RelayCommand]
+        async Task ShowOptionsForSearchIp()
+        {
+            await Shell.Current.GoToAsync($"{nameof(IpOptionsPage)}", new Dictionary<string, object>
+            {
+                {"IpOptions",_ipOption},
+            });
+        }
+
         int ConvertMaxPingOfIPToInt(string maxPing)
         {
             if (maxPing == null)
             {
-                return 5000;
+                return 1000;
             }
             else
             {
@@ -86,17 +92,10 @@ namespace fast_cf_ip_scanner.ViewModels
                 }
                 catch
                 {
-                    return 5000;
+                    return 1000;
                 }
             }
-
         }
-        [RelayCommand]
-        async Task ShowOptionsForSearchIp()
-        {
-            
-        }
-
 
         [RelayCommand]
         async Task ShowSelectedIPOption(IPModel ipModel)

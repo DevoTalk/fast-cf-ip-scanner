@@ -8,5 +8,6 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 		Routing.RegisterRoute(nameof(SettingPage), typeof(SettingPage));
+		Routing.RegisterRoute(nameof(IpOptionsPage), typeof(IpOptionsPage));
     }
 }

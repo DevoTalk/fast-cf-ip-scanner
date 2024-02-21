@@ -23,6 +23,8 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<SettingPage>();
 
+		builder.Services.AddSingleton<IpOptionsPage>();
+
         #endregion
 
         #region ViewModels
@@ -30,6 +32,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ScanPageViewModel>();
 
         builder.Services.AddSingleton<SettingViewModel>();
+
+		builder.Services.AddSingleton<IpOptionViewModel>();
 
         #endregion
 

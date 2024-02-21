@@ -6,6 +6,7 @@ public partial class ScanPage : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
-		
-	}
+    }
+    
+
 }
