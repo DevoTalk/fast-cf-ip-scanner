@@ -58,6 +58,9 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\IpOptions.xaml.cs">
+      <DependentUpon>IpOptions.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -66,6 +69,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <MauiXaml Update="Views\IpOptions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\SettingPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="fast_cf_ip_scanner.Views.IpOptions"
+             Title="IpOptions">
+    <StackLayout Padding="20">
+        <Label Text="Ports:"/>
+        <Picker x:Name="PortsPicker" ItemsSource="{Binding Ports}"/>
+
+        <Label Text="Max Ping of IP:"/>
+        <Entry x:Name="MaxPingEntry" Text="{Binding MaxPingOfIP}"/>
+
+        <Label Text="Minimum Count of Valid IP:"/>
+        <Entry x:Name="MinCountEntry" Text="{Binding MinimumCountOfValidIp}"/>
+
+        <Label Text="Count of Repeat Test for Each IP:"/>
+        <Entry x:Name="RepeatCountEntry" Text="{Binding CountOfRepeatTestForEachIp}"/>
+    </StackLayout>
+</ContentPage>

@@ -1,7 +1,9 @@
 ﻿
+using AndroidX.Navigation.Fragment;
 using CommunityToolkit.Mvvm.Input;
 using fast_cf_ip_scanner.Views;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
+using Microsoft.Maui.Controls;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -92,7 +94,7 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async Task ShowOptionsForSearchIp()
         {
-            await App.Current.MainPage.DisplayActionSheet($"What to Do With","c","a","a");
+            
         }
 
 
