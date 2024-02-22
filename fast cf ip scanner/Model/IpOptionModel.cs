@@ -10,7 +10,7 @@ namespace fast_cf_ip_scanner.Model
     {
         public List<string> Ports { get; set; } = Constants.HttpPorts.Concat(Constants.HttpsPorts).ToList();
 
-        public string MaxPingOfIP { get; set; } = "1000";
+        public int MaxPingOfIP { get; set; } = 1000;
 
         public int MinimumCountOfValidIp { get; set; } = 5;
         public int CountOfRepeatTestForEachIp { get; set; } = 3;

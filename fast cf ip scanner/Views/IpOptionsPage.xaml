@@ -5,17 +5,40 @@
              Title="IpOptions"
              xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
              x:DataType="viewmodel:IpOptionViewModel">
-    <StackLayout Padding="20">
-        <Label Text="Ports:"/>
-        <Picker x:Name="PortsPicker" ItemsSource="{Binding IpOptions.Ports}"/>
+    <ScrollView>
 
-        <Label Text="Max Ping of IP:"/>
-        <Entry x:Name="MaxPingEntry" Text="{Binding IpOptions.MaxPingOfIP}"/>
+        <StackLayout Padding="20">
 
-        <Label Text="Minimum Count of Valid IP:"/>
-        <Entry x:Name="MinCountEntry" Text="{Binding IpOptions.MinimumCountOfValidIp}"/>
+            <Label Text="Ports:"/>
+            <CollectionView ItemsSource="{Binding Ports}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:PortForShow">
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="{Binding Port}"
+                                   VerticalOptions="Center"/>
+                            <CheckBox IsChecked="{Binding IsChecked}"
+                                      VerticalOptions="Center"
+                                      />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <Label Text="Count of Repeat Test for Each IP:"/>
-        <Entry x:Name="RepeatCountEntry" Text="{Binding IpOptions.CountOfRepeatTestForEachIp}"/>
-    </StackLayout>
+            <Label Text="Max Ping of IP:"/>
+            <Entry x:Name="MaxPingEntry" Text="{Binding MaxPingOfIP}"/>
+
+            <Label Text="Minimum Count of Valid IP:"/>
+            <Entry x:Name="MinCountEntry" Text="{Binding MinimumCountOfValidIp}"/>
+
+            <Label Text="Count of Repeat Test for Each IP:"/>
+            <Entry x:Name="RepeatCountEntry" Text="{Binding CountOfRepeatTestForEachIp}"/>
+
+
+            <Button Text="Save" Command="{Binding SaveCommand}"/>
+
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

@@ -1,5 +1,4 @@
-﻿
-using fast_cf_ip_scanner.Views;
+﻿using fast_cf_ip_scanner.Views;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -43,7 +42,7 @@ namespace fast_cf_ip_scanner.ViewModels
 
             ValidIPs.Clear();
 
-            var maxping = ConvertMaxPingOfIPToInt(_ipOption.MaxPingOfIP);
+            var maxping = 0;
             var ips = await _iPServices.GetIps();
             if (ips.Length < 1)
             {
