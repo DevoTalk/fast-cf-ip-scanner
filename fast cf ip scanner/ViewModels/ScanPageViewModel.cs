@@ -1,4 +1,5 @@
 ﻿using fast_cf_ip_scanner.Views;
+using System.ComponentModel;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -11,6 +12,8 @@ namespace fast_cf_ip_scanner.ViewModels
         [ObservableProperty]
         bool isBusy;
 
+
+        
 
         IpOptionModel _ipOption;
         
@@ -25,7 +28,6 @@ namespace fast_cf_ip_scanner.ViewModels
 
             _ipOption = new IpOptionModel();
         }
-
 
         [RelayCommand]
         async void GetValidIPs()
@@ -42,7 +44,6 @@ namespace fast_cf_ip_scanner.ViewModels
 
             ValidIPs.Clear();
 
-            var maxping = 0;
             var ips = await _iPServices.GetIps();
             if (ips.Length < 1)
             {
@@ -52,7 +53,7 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 while (validIp.Count == 0)
                 {
-                    validIp.AddRange(await _iPServices.GetIpValid(ips, maxping,protocol));
+                    validIp.AddRange(await _iPServices.GetIpValid(ips, _ipOption,protocol));
                 }
 
                 validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));

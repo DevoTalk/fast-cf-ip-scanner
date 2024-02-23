@@ -26,8 +26,11 @@ public partial class IpOptionViewModel : BaseViewModel
     [ObservableProperty]
     int countOfRepeatTestForEachIp;
 
+    [ObservableProperty]
+    int countOfIpRanges;
 
-    bool Saved = false;
+
+    bool saved = false;
 
 
     public IpOptionViewModel()
@@ -35,33 +38,35 @@ public partial class IpOptionViewModel : BaseViewModel
         ports = new ObservableCollection<PortForShow>();
     }
 
+    [ObservableProperty]
+    int countOfIpForTest;
+
+    int totalTestForEachIp = 0;
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        if (e.PropertyName == "IpOptions" && !Saved)
+        if (e.PropertyName == "IpOptions" && !saved)
         {
-            foreach (var port in IpOptions.Ports)
+            var allPorts = Constants.HttpPorts.Concat(Constants.HttpsPorts);
+            var selectedPort = IpOptions.Ports;
+            foreach (var port in allPorts)
             {
-                Ports.Add(new PortForShow(port, false));
+                Ports.Add(new PortForShow(port, selectedPort.Any(p => p == port)));
             }
             MaxPingOfIP = IpOptions.MaxPingOfIP;
             MinimumCountOfValidIp = IpOptions.MinimumCountOfValidIp;
             CountOfRepeatTestForEachIp = IpOptions.CountOfRepeatTestForEachIp;
+            CountOfIpRanges = IpOptions.CountOfIpRanges;
+            CountOfIpForTest = IpOptions.CountOfIpForTest;
         }
     }
 
     [RelayCommand]
     async void Save()
     {
-        Saved = true;
+        saved = true;
         IpOptions.Ports.Clear();
-        foreach (var portForShow in Ports)
-        {
-            if (portForShow.IsChecked)
-            {
-                IpOptions.Ports.Add(portForShow.Port);
-            }
-        }
+        IpOptions.Ports.AddRange(Ports.Where(p => p.IsChecked).Select(p => p.Port));
         if (IpOptions.Ports.Count == 0)
         {
             IpOptions.Ports.AddRange(GetRandomPort());
@@ -73,6 +78,7 @@ public partial class IpOptionViewModel : BaseViewModel
         else
         {
             await App.Current.MainPage.DisplayAlert("error", "Minimum Count is 1", "ok");
+            saved = false;
         }
         if (MinimumCountOfValidIp > 0)
         {
@@ -81,6 +87,7 @@ public partial class IpOptionViewModel : BaseViewModel
         else
         {
             await App.Current.MainPage.DisplayAlert("error", "Minimum Count is 1", "ok");
+            saved = false;
 
         }
         if (MaxPingOfIP > 100)
@@ -90,9 +97,44 @@ public partial class IpOptionViewModel : BaseViewModel
         else 
         {
             await App.Current.MainPage.DisplayAlert("error", "Minimum ping is 100", "ok");
+            saved = false;
+
+        }
+        if (CountOfIpRanges > 0)
+        {
+            IpOptions.CountOfIpRanges = CountOfIpRanges;
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("error", "Minimum Count is 1", "ok");
+            saved = false;
+
+        }
+        if (CountOfIpForTest > 0)
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+        else
+        {
+            saved = false;
         }
 
-        await Shell.Current.GoToAsync("../");
+
+        if (saved)
+        {
+            totalTestForEachIp = CountOfRepeatTestForEachIp * (Ports.Where(p=>p.IsChecked)).Count();
+            var countOfIpInEachRange = CountOfIpForTest / CountOfIpRanges;
+
+            await App.Current.MainPage.DisplayAlert("Info", $"{CountOfIpForTest} ips in {CountOfIpRanges} ranges will be tested {totalTestForEachIp} times", "ok");
+            await Shell.Current.GoToAsync("../");
+        }
     }
     public string[] GetRandomPort(int count = 3)
     {
@@ -108,5 +150,8 @@ public partial class IpOptionViewModel : BaseViewModel
         return randomPorts;
     }
 
-
+    public void UpdateVar()
+    {
+        totalTestForEachIp = CountOfRepeatTestForEachIp * (Ports.Where(p => p.IsChecked)).Count();
+    }
 }

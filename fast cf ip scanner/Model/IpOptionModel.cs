@@ -4,15 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fast_cf_ip_scanner.Model
+namespace fast_cf_ip_scanner.Model;
+
+public class IpOptionModel
 {
-    public class IpOptionModel
+    public IpOptionModel()
     {
-        public List<string> Ports { get; set; } = Constants.HttpPorts.Concat(Constants.HttpsPorts).ToList();
-
-        public int MaxPingOfIP { get; set; } = 1000;
-
-        public int MinimumCountOfValidIp { get; set; } = 5;
-        public int CountOfRepeatTestForEachIp { get; set; } = 3;
+        Ports = new List<string>();
+        Ports.AddRange(new List<string>() { "80", "443", "8080" });
     }
+    public List<string> Ports { get; set; } 
+
+    public int MaxPingOfIP { get; set; } = 1000;
+
+    public int MinimumCountOfValidIp { get; set; } = 5;
+    public int CountOfRepeatTestForEachIp { get; set; } = 1;
+    public int CountOfIpRanges { get; set; } = 4;
+    public int CountOfIpForTest { get; set; } = 20;
 }

@@ -6,9 +6,8 @@
              xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
              x:DataType="viewmodel:IpOptionViewModel">
     <ScrollView>
-
         <StackLayout Padding="20">
-
+           
             <Label Text="Ports:"/>
             <CollectionView ItemsSource="{Binding Ports}">
                 <CollectionView.ItemsLayout>
@@ -18,12 +17,15 @@
                     <DataTemplate x:DataType="viewmodel:PortForShow">
                         <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
                             <Label Text="{Binding Port}"
-                       VerticalOptions="CenterAndExpand"
-                       FontSize="Small"
-                       TextColor="White"/>
+                                   VerticalOptions="CenterAndExpand"
+                                   FontSize="Small"
+                                   TextColor="White"/>
                             <CheckBox IsChecked="{Binding IsChecked}"
-                          VerticalOptions="CenterAndExpand"
-                          Color="DodgerBlue"/>
+                                  VerticalOptions="CenterAndExpand"
+                                  Color="DodgerBlue"
+                                  CheckedChanged="CheckBox_CheckedChanged">
+
+                            </CheckBox>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -39,6 +41,11 @@
             <Label Text="Count of Repeat Test for Each IP:"/>
             <Entry x:Name="RepeatCountEntry" Text="{Binding CountOfRepeatTestForEachIp}"/>
 
+            <Label Text="Count of IP ranges"/>
+            <Entry x:Name="CountOfIpRanges" Text="{Binding CountOfIpRanges}"/>
+
+            <Label Text="Count of IP for test"/>
+            <Entry x:Name="CountOfIpForTest" Text="{Binding CountOfIpForTest}"/>
 
             <Button Text="Save" Command="{Binding SaveCommand}"/>
 
