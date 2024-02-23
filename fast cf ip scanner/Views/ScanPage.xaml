@@ -13,9 +13,8 @@
     </ContentPage.Resources>
     
     <ScrollView>
-        
+
         <VerticalStackLayout>
-            <Label Text="hi"/>
             <Grid 
                 ColumnSpacing="10"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
