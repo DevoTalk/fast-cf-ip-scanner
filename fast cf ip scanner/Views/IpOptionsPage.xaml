@@ -16,16 +16,19 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:PortForShow">
-                        <StackLayout Orientation="Horizontal" Spacing="10">
+                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
                             <Label Text="{Binding Port}"
-                                   VerticalOptions="Center"/>
+                       VerticalOptions="CenterAndExpand"
+                       FontSize="Small"
+                       TextColor="White"/>
                             <CheckBox IsChecked="{Binding IsChecked}"
-                                      VerticalOptions="Center"
-                                      />
+                          VerticalOptions="CenterAndExpand"
+                          Color="DodgerBlue"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
 
             <Label Text="Max Ping of IP:"/>
             <Entry x:Name="MaxPingEntry" Text="{Binding MaxPingOfIP}"/>

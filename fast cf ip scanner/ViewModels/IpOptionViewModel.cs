@@ -54,8 +54,18 @@ public partial class IpOptionViewModel : BaseViewModel
     async void Save()
     {
         Saved = true;
-        
-        //IpOptions.Ports = Ports;
+        IpOptions.Ports.Clear();
+        foreach (var portForShow in Ports)
+        {
+            if (portForShow.IsChecked)
+            {
+                IpOptions.Ports.Add(portForShow.Port);
+            }
+        }
+        if (IpOptions.Ports.Count == 0)
+        {
+            IpOptions.Ports.AddRange(GetRandomPort());
+        }
         if (MinimumCountOfValidIp > 0)
         {
             IpOptions.MinimumCountOfValidIp = MinimumCountOfValidIp;
@@ -84,7 +94,19 @@ public partial class IpOptionViewModel : BaseViewModel
 
         await Shell.Current.GoToAsync("../");
     }
+    public string[] GetRandomPort(int count = 3)
+    {
+        Random random = new Random();
+        string[] randomPorts = new string[count];
+        var allPorts = Constants.HttpPorts.Concat(Constants.HttpsPorts).ToList();
+
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = random.Next(allPorts.Count);
+            randomPorts[i] = allPorts[randomIndex];
+        }
+        return randomPorts;
+    }
 
 
-    
 }
