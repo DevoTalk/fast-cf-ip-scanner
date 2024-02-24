@@ -10,7 +10,7 @@ namespace fast_cf_ip_scanner.ViewModels
 
 
         [ObservableProperty]
-        bool isBusy;
+        bool isBusy = false;
 
 
         

@@ -17,18 +17,24 @@
         <VerticalStackLayout>
             <Grid 
                 ColumnSpacing="10"
-                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                Padding="10"
+                Margin="10">
                 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
                 <Button
                     Text="Start"
                     Style="{StaticResource MyBtn}"
                     Grid.Column="0" 
                     Command="{Binding GetValidIPsCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
+                    HeightRequest="50"
                     />
 
                 <Button
@@ -36,6 +42,7 @@
                     Style="{StaticResource MyBtn}"
                     Grid.Column="1" 
                     Command="{Binding ShowOptionsForSearchIpCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
                     />
             
             </Grid>
@@ -48,7 +55,7 @@
                             HorizontalOptions="Center"
                             SelectionChangedCommand="{Binding ShowSelectedIPOptionCommand}"
                             SelectionChangedCommandParameter="{Binding Source={x:Reference validIPCollectionView}, Path=SelectedItem}"
-                            SelectionMode="None"
+                            SelectionMode="Single"
                             IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:IPModel">
