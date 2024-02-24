@@ -1,6 +1,8 @@
 ﻿
 
 using fast_cf_ip_scanner.Data;
+using Microsoft.Maui.Animations;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -134,68 +136,74 @@ namespace fast_cf_ip_scanner.Services
 
         public async Task<List<IPModel>> GetValidIPWithTCPTest(string[] ips, IpOptionModel ipOptions)
         {
-
-            var validIp = new List<IPModel>();
+            var validIp = new ConcurrentBag<IPModel>();
 
             async Task TestConnectionAsync(string ip)
             {
-
                 var ports = new List<string>();
+                var stopwatch = new Stopwatch();
                 var ipIsConnected = false;
+                var ping = 0;
                 for (int i = 0; i < ipOptions.CountOfRepeatTestForEachIp; i++)
                 {
-
                     foreach (var port in ipOptions.Ports)
                     {
                         try
                         {
-                            TcpClient tcpClient = new TcpClient();
-                            tcpClient.ConnectAsync(ip, int.Parse(port));
-                            await Task.Delay(ipOptions.MaxPingOfIP);
-                            if (tcpClient.Connected)
+                            using (var tcpClient = new TcpClient())
                             {
-                                ipIsConnected = true;
-                                ports.Add(port);
+                                stopwatch.Restart();
+                                var connectTask = tcpClient.ConnectAsync(ip, int.Parse(port));
+
+                                // Wait for either connection or timeout
+                                await Task.WhenAny(connectTask, Task.Delay(ipOptions.MaxPingOfIP));
+                                
+                                stopwatch.Stop();
+                                if (tcpClient.Connected)
+                                {
+                                    
+                                    ipIsConnected = true;
+                                    ports.Add(port);
+
+                                    // Calculate ping time
+                                    ping += Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                                    // Do something with pingTime if needed
+                                }
                             }
                         }
-                        catch
-                        {
-
-                        }
+                        catch { }
                     }
                 }
 
                 if (ipIsConnected)
                 {
-                    lock (validIp)
+                    validIp.Add(new IPModel
                     {
-                        validIp.Add(new IPModel
-                        {
-                            IP = ip,
-                            Ping = 0,
-                            Ports = string.Join(",", ports)
-                        });
-                    }
+                        IP = ip,
+                        // You can add the ping time here if needed
+                        Ping = ping / (ipOptions.CountOfRepeatTestForEachIp + ports.Count), // Placeholder for now
+                        Ports = string.Join(",", ports)
+                    });
                 }
             }
-            while (true)
-            {
-                if (validIp.Count >= ipOptions.MinimumCountOfValidIp)
-                {
-                    break;
-                }
-                var newRandomIps = GetRandomIp(ips, ipOptions.CountOfIpForTest, ipOptions.CountOfIpRanges);
 
-                List<Task> tasks = new List<Task>();
+            while (validIp.Count < ipOptions.MinimumCountOfValidIp)
+            {
+                var newRandomIps = GetRandomIp(ips, ipOptions.CountOfIpForTest, ipOptions.CountOfIpRanges);
+                var tasks = new List<Task>();
 
                 foreach (var ip in newRandomIps)
                 {
                     tasks.Add(TestConnectionAsync(ip));
                 }
-                await Task.Delay(ipOptions.MaxPingOfIP * (ipOptions.CountOfRepeatTestForEachIp + ipOptions.Ports.Count));
+
+                await Task.WhenAll(tasks);
+                //await Task.Delay(ipOptions.MaxPingOfIP * (ipOptions.CountOfRepeatTestForEachIp + ipOptions.Ports.Count));
             }
-            return validIp;
+
+            return validIp.ToList();
         }
+
 
         public async Task<List<IPModel>> GetValidIPWithUDPTest(string[] ips, int maxPing)
         {
