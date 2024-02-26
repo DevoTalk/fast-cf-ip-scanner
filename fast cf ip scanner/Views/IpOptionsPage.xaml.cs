@@ -10,8 +10,5 @@ public partial class IpOptionsPage : ContentPage
         vm = viewModel;
     }
 
-    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        vm.UpdateVar();
-    }
+    
 }

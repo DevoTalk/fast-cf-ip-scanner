@@ -15,8 +15,11 @@ public partial class IpOptionViewModel : BaseViewModel
     IpOptionModel _ipOptions;
 
     [ObservableProperty]
-    ObservableCollection<PortForShow> ports;
-    
+    ObservableCollection<PortForShow> httpPorts;
+
+    [ObservableProperty]
+    ObservableCollection<PortForShow> httpsPorts;
+
     [ObservableProperty]
     int maxPingOfIP;
 
@@ -35,7 +38,8 @@ public partial class IpOptionViewModel : BaseViewModel
 
     public IpOptionViewModel()
     {
-        ports = new ObservableCollection<PortForShow>();
+        httpPorts = new ObservableCollection<PortForShow>();
+        httpsPorts = new ObservableCollection<PortForShow>();
     }
 
     [ObservableProperty]
@@ -47,11 +51,16 @@ public partial class IpOptionViewModel : BaseViewModel
         base.OnPropertyChanged(e);
         if (e.PropertyName == "IpOptions" && !saved)
         {
-            var allPorts = Constants.HttpPorts.Concat(Constants.HttpsPorts);
+            var allHttpPorts = Constants.HttpPorts;
+            var allHttpsPorts = Constants.HttpsPorts;
             var selectedPort = IpOptions.Ports;
-            foreach (var port in allPorts)
+            foreach (var port in allHttpPorts)
             {
-                Ports.Add(new PortForShow(port, selectedPort.Any(p => p == port)));
+                HttpPorts.Add(new PortForShow(port, selectedPort.Any(p => p == port)));
+            }
+            foreach (var port in allHttpsPorts)
+            {
+                HttpsPorts.Add(new PortForShow(port, selectedPort.Any(p => p == port)));
             }
             MaxPingOfIP = IpOptions.MaxPingOfIP;
             MinimumCountOfValidIp = IpOptions.MinimumCountOfValidIp;
@@ -66,7 +75,8 @@ public partial class IpOptionViewModel : BaseViewModel
     {
         saved = true;
         IpOptions.Ports.Clear();
-        IpOptions.Ports.AddRange(Ports.Where(p => p.IsChecked).Select(p => p.Port));
+        IpOptions.Ports.AddRange(HttpPorts.Where(p => p.IsChecked).Select(p => p.Port));
+        IpOptions.Ports.AddRange(HttpsPorts.Where(p => p.IsChecked).Select(p => p.Port));
         if (IpOptions.Ports.Count == 0)
         {
             IpOptions.Ports.AddRange(GetRandomPort());
@@ -129,7 +139,8 @@ public partial class IpOptionViewModel : BaseViewModel
 
         if (saved)
         {
-            totalTestForEachIp = CountOfRepeatTestForEachIp * (Ports.Where(p=>p.IsChecked)).Count();
+            var countSelectedOfPorts = HttpPorts.Where(p => p.IsChecked).Count() + HttpsPorts.Where(p => p.IsChecked).Count();
+            totalTestForEachIp = CountOfRepeatTestForEachIp * countSelectedOfPorts;
             var countOfIpInEachRange = CountOfIpForTest / CountOfIpRanges;
 
             await App.Current.MainPage.DisplayAlert("Info", $"{CountOfIpForTest} ips in {CountOfIpRanges} ranges will be tested {totalTestForEachIp} times", "ok");
@@ -150,8 +161,5 @@ public partial class IpOptionViewModel : BaseViewModel
         return randomPorts;
     }
 
-    public void UpdateVar()
-    {
-        totalTestForEachIp = CountOfRepeatTestForEachIp * (Ports.Where(p => p.IsChecked)).Count();
-    }
+    
 }

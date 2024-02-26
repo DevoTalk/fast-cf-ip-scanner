@@ -7,9 +7,9 @@
              x:DataType="viewmodel:IpOptionViewModel">
     <ScrollView>
         <StackLayout Padding="20">
-           
-            <Label Text="Ports:"/>
-            <CollectionView ItemsSource="{Binding Ports}">
+
+            <Label Text="Http Ports:"/>
+            <CollectionView ItemsSource="{Binding HttpPorts}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" />
                 </CollectionView.ItemsLayout>
@@ -22,8 +22,28 @@
                                    TextColor="White"/>
                             <CheckBox IsChecked="{Binding IsChecked}"
                                   VerticalOptions="CenterAndExpand"
-                                  Color="DodgerBlue"
-                                  CheckedChanged="CheckBox_CheckedChanged">
+                                  Color="DodgerBlue">
+
+                            </CheckBox>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Text="Https Ports:"/>
+            <CollectionView ItemsSource="{Binding HttpsPorts}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:PortForShow">
+                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
+                            <Label Text="{Binding Port}"
+                       VerticalOptions="CenterAndExpand"
+                       FontSize="Small"
+                       TextColor="White"/>
+                            <CheckBox IsChecked="{Binding IsChecked}"
+                      VerticalOptions="CenterAndExpand"
+                      Color="DodgerBlue">
 
                             </CheckBox>
                         </StackLayout>
