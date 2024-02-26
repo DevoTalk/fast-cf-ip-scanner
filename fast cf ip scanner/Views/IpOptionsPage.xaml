@@ -4,7 +4,8 @@
              x:Class="fast_cf_ip_scanner.Views.IpOptionsPage"
              Title="IpOptions"
              xmlns:viewmodel="clr-namespace:fast_cf_ip_scanner.ViewModels"
-             x:DataType="viewmodel:IpOptionViewModel">
+             x:DataType="viewmodel:IpOptionViewModel"
+             BackgroundColor="Black">
     <ScrollView>
         <StackLayout Padding="20">
 
@@ -38,12 +39,12 @@
                     <DataTemplate x:DataType="viewmodel:PortForShow">
                         <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
                             <Label Text="{Binding Port}"
-                       VerticalOptions="CenterAndExpand"
-                       FontSize="Small"
-                       TextColor="White"/>
+                                VerticalOptions="CenterAndExpand"
+                                FontSize="Small"
+                                TextColor="White"/>
                             <CheckBox IsChecked="{Binding IsChecked}"
-                      VerticalOptions="CenterAndExpand"
-                      Color="DodgerBlue">
+                                VerticalOptions="CenterAndExpand"
+                                Color="DodgerBlue">
 
                             </CheckBox>
                         </StackLayout>
@@ -52,13 +53,13 @@
             </CollectionView>
 
 
-            <Label Text="Max Ping of IP:"/>
+            <Label Text="Max ping of IP:"/>
             <Entry x:Name="MaxPingEntry" Text="{Binding MaxPingOfIP}"/>
 
-            <Label Text="Minimum Count of Valid IP:"/>
+            <Label Text="Minimum count of valid IP:"/>
             <Entry x:Name="MinCountEntry" Text="{Binding MinimumCountOfValidIp}"/>
 
-            <Label Text="Count of Repeat Test for Each IP:"/>
+            <Label Text="Count of repeat test for each IP:"/>
             <Entry x:Name="RepeatCountEntry" Text="{Binding CountOfRepeatTestForEachIp}"/>
 
             <Label Text="Count of IP ranges"/>
