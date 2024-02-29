@@ -78,24 +78,7 @@ namespace fast_cf_ip_scanner.ViewModels
             });
         }
 
-        int ConvertMaxPingOfIPToInt(string maxPing)
-        {
-            if (maxPing == null)
-            {
-                return 1000;
-            }
-            else
-            {
-                try
-                {
-                    return Convert.ToInt32(maxPing);
-                }
-                catch
-                {
-                    return 1000;
-                }
-            }
-        }
+        
 
         [RelayCommand]
         async Task ShowSelectedIPOption(IPModel ipModel)
