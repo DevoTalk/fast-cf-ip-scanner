@@ -38,6 +38,9 @@ namespace fast_cf_ip_scanner.Services
                 //case "UDP test":
                 //    validIps = await GetValidIPWithUDPTest(ips, ipOptions);
                 //    break;
+                case "Terminal Ping":
+                    validIps = await GetValidIpWithPingTest(ips, ipOptions);
+                    break;
 
                 default:
                     validIps = await GetValidٌIPWithHttpTest(ips, ipOptions);
@@ -157,11 +160,11 @@ namespace fast_cf_ip_scanner.Services
 
                                 // Wait for either connection or timeout
                                 await Task.WhenAny(connectTask, Task.Delay(ipOptions.MaxPingOfIP));
-                                
+
                                 stopwatch.Stop();
                                 if (tcpClient.Connected)
                                 {
-                                    
+
                                     ipIsConnected = true;
                                     ports.Add(port);
 
@@ -256,6 +259,77 @@ namespace fast_cf_ip_scanner.Services
             }
             return validIp;
         }
+
+
+
+
+
+
+        public async Task<List<IPModel>> GetValidIpWithPingTest(string[] ips, IpOptionModel ipOptions)
+        {
+            var validIp = new ConcurrentBag<IPModel>();
+
+            async Task TestConnectionAsync(string ipAddress)
+            {
+                var ping = 0;
+                var ipIsConnected = false;
+                var totalTimeOut = 0;
+                for (int i = 0; i < ipOptions.CountOfRepeatTestForEachIp; i++)
+                {
+                    using (Ping pingSender = new Ping())
+                    {
+                        try
+                        {
+                            PingReply reply = pingSender.Send(ipAddress, ipOptions.MaxPingOfIP);
+
+                            if (reply.Status == IPStatus.Success)
+                            {
+                                ipIsConnected = true;
+                                ping += (int)reply.RoundtripTime;
+                            }
+                            else
+                            {
+                                totalTimeOut += 1;
+                            }
+                        }
+                        catch
+                        {
+                            totalTimeOut += 1;
+                        }
+                    }
+                }
+                if (ipIsConnected)
+                {
+                    var avgPing = ping / ipOptions.CountOfRepeatTestForEachIp;
+                    lock (validIp)
+                    {
+                        validIp.Add(new()
+                        {
+                            IP = ipAddress,
+                            Ping = avgPing,
+
+                        });
+                    }
+                }
+            }
+
+            while (validIp.Count < ipOptions.MinimumCountOfValidIp)
+            {
+                var newRandomIps = GetRandomIp(ips, ipOptions.CountOfIpForTest, ipOptions.CountOfIpRanges);
+                var tasks = new List<Task>();
+
+                foreach (var ip in newRandomIps)
+                {
+                    tasks.Add(TestConnectionAsync(ip));
+                }
+
+                await Task.WhenAll(tasks);
+            }
+
+            return validIp.ToList();
+        }
+
+
         #endregion
 
 
