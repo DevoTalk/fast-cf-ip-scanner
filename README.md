@@ -1,32 +1,34 @@
-Fast CloudFlare IP Scanner
-This tool is developed  to scan CloudFlare IPs for HTTP and TCP requests on various ports. It provides a convenient way to identify CloudFlare IPs and monitor traffic on specific ports.
+## Fast CloudFlare IP Scanner
 
-Features
-HTTP Request Scanning: Detects HTTP requests sent to CloudFlare IPs.
-TCP Port Scanning: Monitors TCP traffic on different ports for CloudFlare IPs.
+This tool helps you scan CloudFlare IPs for HTTP requests and TCP traffic on various ports. It simplifies identifying CloudFlare IPs and monitoring specific port activity.
 
-Usage
-After launching the CloudFlare IP scanner, follow the on-screen instructions to configure the scanning parameters and start monitoring HTTP requests and TCP traffic on various ports for CloudFlare IPs.
+**Features:**
 
-Example
-Here's an example of how to use the CloudFlare IP scanner:
+* **HTTP Request Scanning:** Send HTTP requests to CloudFlare IPs.
+* **TCP Port Scanning:** Monitors TCP traffic on different ports for CloudFlare IPs.
 
-Launch the application.
-Click options butto and monfigure the scanning parameters, such as ports to monitor.
-Start the scanning process.
-View the scan results in real-time.
-click on valid ips to copy
+**Usage:**
 
-Contributing
-Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on GitHub.
+1. Launch the CloudFlare IP Scanner.
+2. Click on Options buttom to configure scanning parameters.
+3. Start the scanning process.
+4. View scan results in real-time.
+5. Click on valid IPs to copy them.
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+**Contributing:**
 
-Credits
-This tool was developed by DevoTalk.
+We welcome your contributions! If you encounter issues or have suggestions, feel free to open an issue or submit a pull request on GitHub.
 
-Contact
-If you have any questions or feedback, feel free to contact the project maintainer at alihosseini1707@outlook.com.
+**License:**
 
-Enjoy Fast CloudFlare IP scanner
+This project is licensed under the MIT License. For details, see the LICENSE file.
+
+**Credits:**
+
+Developed by DevoTalk.
+
+**Contact:**
+
+For questions or feedback, contact the project maintainer at alihosseini1707@outlook.com.
+
+**Enjoy using the Fast CloudFlare IP Scanner!**
