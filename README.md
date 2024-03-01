@@ -29,6 +29,6 @@ Developed by DevoTalk.
 
 **Contact:**
 
-For questions or feedback, contact the project maintainer at alihosseini1707@outlook.com.
+For questions or feedback, contact the project maintainer at devotalk.me@gmail.com
 
 **Enjoy using the Fast CloudFlare IP Scanner!**
