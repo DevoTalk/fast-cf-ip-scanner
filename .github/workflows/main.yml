@@ -25,5 +25,5 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build fast-cf-ip-scanner/fast cf ip scanner.csproj -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
+      run: dotnet build -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
 
