@@ -1,7 +1,7 @@
-# if you liked please give a star🌟 
+## if you liked please give a star🌟 
 
 
-## Fast CloudFlare IP Scanner
+# Fast CloudFlare IP Scanner
 
 This tool helps you scan CloudFlare IPs for HTTP requests and TCP traffic on various ports. It simplifies identifying CloudFlare IPs and monitoring specific port activity.
 
