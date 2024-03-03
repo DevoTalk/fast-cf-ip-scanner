@@ -26,7 +26,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
-    
+    - name: url
+      run: echo "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
     
   publish-release:
     needs: build    
