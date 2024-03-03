@@ -26,4 +26,18 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
+    
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: published-app
+        path: ./bin/Release/**
 
+    - name: Create GitHub Release (if main branch)
+      if: github.ref == 'refs/heads/main'
+      uses: nilsfröhlich/actions-github-release@v3
+      with:
+        tag_name: "v1.3"  # Use commit SHA for tag name
+        release_name: "test"
+        body: "**New Release:** Built and published from commit "
