@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
       - name: List directory contents
         run: |
-          ls
+          ls /usr/bin/bash
 
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -46,6 +46,6 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: bin/Release/net8.0-android/publish/*.apk
+          files: bin/**/*.apk
 
 
