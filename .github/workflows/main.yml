@@ -11,9 +11,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@latest
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@latest
       with:
         dotnet-version: 8.0.x
     - name: Setup Keystore File
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:    
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@latest
 
       - name: Create Release
       - uses: marvinpinto/action-automatic-releases@latest
