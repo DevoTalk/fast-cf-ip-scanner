@@ -27,22 +27,10 @@ jobs:
     - name: Build
       run: dotnet build -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
     
-    
-  publish-release:
-    needs: build    
-    name: Create Release
-    runs-on: ubuntu-latest
-    steps:    
-      - name: Checkout code
-        uses: actions/checkout@latest
 
-      - name: Create Release
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.TOKEN }} # This token is provided by Actions, you do not need to create your own token
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            fast cf ip scanner/bin/Release/net8.0-android/publish/*.apk
+
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v4.1.4
+          
+ 
 
