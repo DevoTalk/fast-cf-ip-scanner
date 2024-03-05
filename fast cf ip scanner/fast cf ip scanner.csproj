@@ -12,7 +12,7 @@
     <!-- Display name -->
     <ApplicationTitle>fast cf ip scanner</ApplicationTitle>
     <!-- App Identifier -->
-    <ApplicationId>com.Ali1707.fast_cf_ip_scanner</ApplicationId>
+    <ApplicationId>com.DevoTalk.fast_cf_ip_scanner</ApplicationId>
     <ApplicationIdGuid>4fb46e13-cf0a-419b-99f7-22b80a864ae4</ApplicationIdGuid>
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
