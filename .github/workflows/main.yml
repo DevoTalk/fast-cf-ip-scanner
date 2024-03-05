@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
       - name: List directory contents
         run: |
-          ls /usr/bin/bash
+          ls -r
 
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
