@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/fast cf ip scanner/FastCfIPScanner.keystore
+/fast cf ip scanner/FastCfIPScanner.keystore.asc
