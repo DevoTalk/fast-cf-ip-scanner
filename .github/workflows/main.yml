@@ -29,16 +29,6 @@ jobs:
     - name: List directory contents
       run: |
         ls -r
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: List directory contents 2
-      run: |
-        ls -r
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-          ./**/*.apk
     - name: Create Release
       uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -46,6 +36,6 @@ jobs:
         automatic_release_tag: "latest"
         prerelease: true
         title: "Development Build"
-        files: ./**/*.apk
+        files: fast cf ip scanner\bin\Release\net8.0-android\*.apk
 
 
