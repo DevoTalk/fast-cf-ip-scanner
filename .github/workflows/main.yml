@@ -26,30 +26,26 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
-    
-
-  publish-release:
-    needs: build
-    name: Create Release
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: List directory contents
-        run: |
-          ls -r
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          path: |
-            ./**/*.apk
-      - name: Create Release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.TOKEN }} # Replace with your actual secret token
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: ./**/*.apk
+    - name: List directory contents
+      run: |
+        ls -r
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: List directory contents 2
+      run: |
+        ls -r
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: |
+          ./**/*.apk
+    - name: Create Release
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: ${{ secrets.TOKEN }} # Replace with your actual secret token
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: ./**/*.apk
 
 
