@@ -31,14 +31,18 @@ jobs:
   publish-release:
     needs: build
     name: Create Release
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: List directory contents
         run: |
           ls -r
-
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          path: |
+            ./**/*.apk
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -46,6 +50,6 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: bin/**/*.apk
+          files: ./**/*.apk
 
 
