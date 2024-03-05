@@ -43,6 +43,6 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: fast cf ip scanner/bin/Release/net8.0-android/publish/*.apk
+          files: bin/Release/net8.0-android/publish/*.apk
 
 
