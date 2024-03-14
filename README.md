@@ -1,4 +1,9 @@
 ## if you liked please give a star🌟 
+## Donations
+Tether USDT TRC20 : 
+```
+TYC5V7cvtvResCJBnGm3smUgQY8CekSwFz
+```
 
 # Fast CloudFlare IP Scanner
 This tool helps you scan CloudFlare IPs for HTTP requests and TCP traffic on various ports. It simplifies identifying CloudFlare IPs and monitoring specific port activity.
