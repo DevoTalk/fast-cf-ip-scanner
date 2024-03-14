@@ -33,7 +33,8 @@ https://github.com/DevoTalk/fast-cf-ip-scanner/assets/86571648/03913ad5-06ab-4c3
 ## Features
 
 * **HTTP Request Scanning:** Send HTTP requests to CloudFlare IPs.
-* **TCP Port Scanning:** Monitors TCP traffic on different ports for CloudFlare IPs.
+* **TCP Scanning:** Monitors TCP traffic on different ports for CloudFlare IPs.
+* **Terminal Ping:** 
 
 
 ## Credits
