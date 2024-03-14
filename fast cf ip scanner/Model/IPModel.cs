@@ -19,5 +19,6 @@ namespace fast_cf_ip_scanner.Model
         public int Ping { get; set; }
 
         public string Ports {  get; set; }
+        public int CountOfTimeout { get; set; }
     }
 }

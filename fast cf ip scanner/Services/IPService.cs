@@ -38,7 +38,7 @@ namespace fast_cf_ip_scanner.Services
                 //case "UDP test":
                 //    validIps = await GetValidIPWithUDPTest(ips, ipOptions);
                 //    break;
-                case "Terminal Ping":
+                case "Terminal Ping test":
                     validIps = await GetValidIpWithPingTest(ips, ipOptions);
                     break;
 
@@ -64,9 +64,9 @@ namespace fast_cf_ip_scanner.Services
                     Timeout = TimeSpan.FromSeconds(ipOptions.MaxPingOfIP),
                 };
 
-                int totalPing = 0;
                 var ports = new List<string>();
-                var ipIsConnected = false;
+
+                var timeoutCount = 0;
                 for (int i = 0; i < ipOptions.CountOfRepeatTestForEachIp; i++)
                 {
                     foreach (var port in ipOptions.Ports)
@@ -80,36 +80,36 @@ namespace fast_cf_ip_scanner.Services
 
                             if (result != null)
                             {
-                                ipIsConnected = true;
-                                ports.Add(port);
+                                if(!ports.Any(p => p == port))
+                                {
+                                    ports.Add(port);
+                                }
                             }
                         }
                         catch
                         {
-                            ipIsConnected = false;
-                            stopwatch.Stop();
+                            timeoutCount++;
                         }
-
-
-                        var currentPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
-                        totalPing += currentPing;
                     }
                 }
-                int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp + ipOptions.Ports.Count);
-                if (ipIsConnected)
+                if (ports.Any())
                 {
+                    var totalPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                    int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp * ipOptions.Ports.Count);
                     lock (validIp)
                     {
                         validIp.Add(new IPModel
                         {
                             IP = ipAddresse.ToString(),
                             Ping = ping,
-                            Ports = string.Join(",", ports)
+                            Ports = string.Join(",", ports),
+                            CountOfTimeout = timeoutCount
                         });
                     }
                 }
-
             }
+
+
             #region repeat test
             while (true)
             {
@@ -145,8 +145,8 @@ namespace fast_cf_ip_scanner.Services
             {
                 var ports = new List<string>();
                 var stopwatch = new Stopwatch();
-                var ipIsConnected = false;
-                var ping = 0;
+                var totolTimeOut = 0;
+                var totalPing = 0;
                 for (int i = 0; i < ipOptions.CountOfRepeatTestForEachIp; i++)
                 {
                     foreach (var port in ipOptions.Ports)
@@ -161,32 +161,40 @@ namespace fast_cf_ip_scanner.Services
                                 // Wait for either connection or timeout
                                 await Task.WhenAny(connectTask, Task.Delay(ipOptions.MaxPingOfIP));
 
-                                stopwatch.Stop();
                                 if (tcpClient.Connected)
                                 {
-
-                                    ipIsConnected = true;
-                                    ports.Add(port);
-
-                                    // Calculate ping time
-                                    ping += Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
-                                    // Do something with pingTime if needed
+                                    stopwatch.Stop();
+                                    totalPing += Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
+                                    if (!ports.Any(p => p == port))
+                                    {
+                                        ports.Add(port);
+                                    }
+                                }
+                                else
+                                {
+                                    totolTimeOut++;
                                 }
                             }
                         }
-                        catch { }
+                        catch {
+                            totolTimeOut++;
+                        }
                     }
                 }
 
-                if (ipIsConnected)
+                if (ports.Any())
                 {
-                    validIp.Add(new IPModel
+                    int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp * ipOptions.Ports.Count);
+                    lock (validIp)
                     {
-                        IP = ip,
-                        // You can add the ping time here if needed
-                        Ping = ping / (ipOptions.CountOfRepeatTestForEachIp + ports.Count), // Placeholder for now
-                        Ports = string.Join(",", ports)
-                    });
+                        validIp.Add(new IPModel
+                        {
+                            IP = ip,
+                            Ping = ping,
+                            Ports = string.Join(",", ports),
+                            CountOfTimeout = totolTimeOut
+                        });
+                    }
                 }
             }
 
@@ -200,8 +208,14 @@ namespace fast_cf_ip_scanner.Services
                     tasks.Add(TestConnectionAsync(ip));
                 }
 
-                await Task.WhenAll(tasks);
-                //await Task.Delay(ipOptions.MaxPingOfIP * (ipOptions.CountOfRepeatTestForEachIp + ipOptions.Ports.Count));
+                for (int i = 0; i < ipOptions.MaxPingOfIP / 100; i++)
+                {
+                    await Task.Delay(100);
+                    if (validIp.Count >= ipOptions.MinimumCountOfValidIp)
+                    {
+                        return validIp.ToList();
+                    }
+                }
             }
 
             return validIp.ToList();
@@ -280,7 +294,8 @@ namespace fast_cf_ip_scanner.Services
                     {
                         try
                         {
-                            PingReply reply = pingSender.Send(ipAddress, ipOptions.MaxPingOfIP);
+                            var reply = await pingSender.SendPingAsync(ipAddress, ipOptions.MaxPingOfIP);
+
 
                             if (reply.Status == IPStatus.Success)
                             {
@@ -307,7 +322,7 @@ namespace fast_cf_ip_scanner.Services
                         {
                             IP = ipAddress,
                             Ping = avgPing,
-
+                            CountOfTimeout = totalTimeOut
                         });
                     }
                 }
@@ -322,10 +337,15 @@ namespace fast_cf_ip_scanner.Services
                 {
                     tasks.Add(TestConnectionAsync(ip));
                 }
-
-                await Task.WhenAll(tasks);
+                for (int i = 0; i < ipOptions.MaxPingOfIP / 100; i++)
+                {
+                    await Task.Delay(100);
+                    if (validIp.Count >= ipOptions.MinimumCountOfValidIp)
+                    {
+                        return validIp.ToList();
+                    }
+                }
             }
-
             return validIp.ToList();
         }
 

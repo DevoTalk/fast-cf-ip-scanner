@@ -1,4 +1,6 @@
-﻿using fast_cf_ip_scanner.Views;
+﻿
+using fast_cf_ip_scanner.Views;
+using System;
 using System.ComponentModel;
 
 namespace fast_cf_ip_scanner.ViewModels
@@ -32,8 +34,12 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async void GetValidIPs()
         {
-            var protocol = await App.Current.MainPage.DisplayActionSheet("which protocol", "Cancel", null,new string[]{"Http test","TCP test", "Terminal Ping" });
-            if(protocol == "Cancel" || protocol ==null)
+            var protocols = new string[] { "Http test", "TCP test", "Terminal Ping test" };
+
+            var selectedProtocol = 
+                await App.Current.MainPage.DisplayActionSheet("which protocol", "Cancel", null, protocols);
+            
+            if(selectedProtocol == "Cancel" || selectedProtocol == null)
             {
                 return;
             }
@@ -53,7 +59,7 @@ namespace fast_cf_ip_scanner.ViewModels
             {
                 while (validIp.Count == 0)
                 {
-                    validIp.AddRange(await _iPServices.GetIpValid(ips, _ipOption, protocol));
+                    validIp.AddRange(await _iPServices.GetIpValid(ips, _ipOption, selectedProtocol));
                 }
 
                 validIp.Sort((x, y) => x.Ping.CompareTo(y.Ping));

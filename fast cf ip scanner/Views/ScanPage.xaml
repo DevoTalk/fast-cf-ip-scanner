@@ -68,6 +68,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Grid.Column="0" Text="ip :" TextColor="White" />
                             <Label Grid.Row="0" Grid.Column="1" Text="{Binding IP}" TextColor="White" />
@@ -77,6 +78,9 @@
 
                             <Label Grid.Row="2" Grid.Column="0" Text="ports :" TextColor="White" />
                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ports}" TextColor="White" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="TimeOut :" TextColor="White" />
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding CountOfTimeout}" TextColor="White" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
