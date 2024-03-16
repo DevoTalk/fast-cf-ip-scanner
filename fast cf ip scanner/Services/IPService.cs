@@ -52,7 +52,7 @@ namespace fast_cf_ip_scanner.Services
         public async Task<List<IPModel>> GetValidٌIPWithHttpTest(string[] ips, IpOptionModel ipOptions)
         {
 
-            var validIp = new List<IPModel>();
+            var validIp = new ConcurrentBag<IPModel>();
 
             async Task HttpTest(string ipAddresse)
             {
@@ -80,7 +80,7 @@ namespace fast_cf_ip_scanner.Services
 
                             if (result != null)
                             {
-                                if(!ports.Any(p => p == port))
+                                if (!ports.Any(p => p == port))
                                 {
                                     ports.Add(port);
                                 }
@@ -96,16 +96,14 @@ namespace fast_cf_ip_scanner.Services
                 {
                     var totalPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
                     int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp * ipOptions.Ports.Count);
-                    lock (validIp)
+
+                    validIp.Add(new IPModel
                     {
-                        validIp.Add(new IPModel
-                        {
-                            IP = ipAddresse.ToString(),
-                            Ping = ping,
-                            Ports = string.Join(",", ports),
-                            CountOfTimeout = timeoutCount
-                        });
-                    }
+                        IP = ipAddresse.ToString(),
+                        Ping = ping,
+                        Ports = string.Join(",", ports),
+                        CountOfTimeout = timeoutCount
+                    });
                 }
             }
 
@@ -115,7 +113,7 @@ namespace fast_cf_ip_scanner.Services
             {
                 if (validIp.Count >= ipOptions.MinimumCountOfValidIp)
                 {
-                    return validIp;
+                    return validIp.ToList();
                 }
                 var newRandomIps = GetRandomIp(ips, ipOptions.CountOfIpForTest, ipOptions.CountOfIpRanges);
 
@@ -130,7 +128,7 @@ namespace fast_cf_ip_scanner.Services
                     await Task.Delay(100);
                     if (validIp.Count >= ipOptions.MinimumCountOfValidIp)
                     {
-                        return validIp;
+                        return validIp.ToList();
                     }
                 }
             }
@@ -176,7 +174,8 @@ namespace fast_cf_ip_scanner.Services
                                 }
                             }
                         }
-                        catch {
+                        catch
+                        {
                             totolTimeOut++;
                         }
                     }
@@ -185,16 +184,14 @@ namespace fast_cf_ip_scanner.Services
                 if (ports.Any())
                 {
                     int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp * ipOptions.Ports.Count);
-                    lock (validIp)
+
+                    validIp.Add(new IPModel
                     {
-                        validIp.Add(new IPModel
-                        {
-                            IP = ip,
-                            Ping = ping,
-                            Ports = string.Join(",", ports),
-                            CountOfTimeout = totolTimeOut
-                        });
-                    }
+                        IP = ip,
+                        Ping = ping,
+                        Ports = string.Join(",", ports),
+                        CountOfTimeout = totolTimeOut
+                    });
                 }
             }
 
@@ -225,7 +222,7 @@ namespace fast_cf_ip_scanner.Services
         public async Task<List<IPModel>> GetValidIPWithUDPTest(string[] ips, int maxPing)
         {
 
-            var validIp = new List<IPModel>();
+            var validIp = new ConcurrentBag<IPModel>();
             var randips = GetRandomIp(ips);
             foreach (var ipAddresse in randips)
             {
@@ -268,10 +265,10 @@ namespace fast_cf_ip_scanner.Services
                 await Task.Delay(100);
                 if (validIp.Count >= 5)
                 {
-                    return validIp;
+                    return validIp.ToList();
                 }
             }
-            return validIp;
+            return validIp.ToList();
         }
 
 
@@ -316,15 +313,13 @@ namespace fast_cf_ip_scanner.Services
                 if (ipIsConnected)
                 {
                     var avgPing = ping / ipOptions.CountOfRepeatTestForEachIp;
-                    lock (validIp)
+
+                    validIp.Add(new()
                     {
-                        validIp.Add(new()
-                        {
-                            IP = ipAddress,
-                            Ping = avgPing,
-                            CountOfTimeout = totalTimeOut
-                        });
-                    }
+                        IP = ipAddress,
+                        Ping = avgPing,
+                        CountOfTimeout = totalTimeOut
+                    });
                 }
             }
 
