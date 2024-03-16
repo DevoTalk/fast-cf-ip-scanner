@@ -4,8 +4,7 @@ This tool helps you scan CloudFlare IPs for HTTP requests and TCP traffic on var
 https://github.com/DevoTalk/fast-cf-ip-scanner/assets/86571648/03913ad5-06ab-4c38-9b1f-71448d3546b5
 
 
-## if you liked please give a star🌟 
-## Donations
+## if you liked please give a star🌟  Donations
 Tether USDT TRC20 : 
 ```
 TYC5V7cvtvResCJBnGm3smUgQY8CekSwFz
