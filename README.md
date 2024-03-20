@@ -1,5 +1,11 @@
-# Fast CloudFlare IP Scanner
+# Fast CloudFlare IP Scanner 
 This tool helps you scan CloudFlare IPs for HTTP requests and TCP traffic on various ports. It simplifies identifying CloudFlare IPs and monitoring specific port activity.
+<p align="center">
+    <img src="https://img.shields.io/github/languages/top/DevoTalk/fast-cf-ip-scanner" alt="languages" >
+    <img src="https://img.shields.io/github/stars/DevoTalk/fast-cf-ip-scanner" alt="stars">
+    <img src="https://img.shields.io/github/downloads/DevoTalk/fast-cf-ip-scanner/total.svg" alt="total" >
+</p>
+
 
 https://github.com/DevoTalk/fast-cf-ip-scanner/assets/86571648/03913ad5-06ab-4c38-9b1f-71448d3546b5
 
