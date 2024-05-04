@@ -345,6 +345,43 @@ namespace fast_cf_ip_scanner.Services
         }
 
 
+
+
+
+
+        public async Task<double> GetDownloadSpeedAsync(string testUrl, string ipAddress)
+        {
+            // Replace the host in the test URL with the target IP address.
+            var uriBuilder = new UriBuilder(testUrl)
+            {
+                Host = ipAddress
+            };
+            var targetUrl = uriBuilder.Uri;
+
+            using (var httpClient = new HttpClient())
+            {
+                // Set the 'Host' header to the original host name.
+                httpClient.DefaultRequestHeaders.Host = new Uri(testUrl).Host;
+
+                // Measure the time taken to download the file.
+                var stopwatch = Stopwatch.StartNew();
+                var response = await httpClient.GetAsync(targetUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+                stopwatch.Stop();
+
+                // Read the content as byte array to ensure the download is completed.
+                var contentBytes = await response.Content.ReadAsByteArrayAsync();
+                
+                // Calculate download speed in Mbps (Mega bits per second).
+                double fileSizeInMegabytes = contentBytes.Length / (1024d * 1024d);
+                double durationInSeconds = stopwatch.Elapsed.TotalSeconds;
+                double speedMbps = (fileSizeInMegabytes / durationInSeconds) * 8; // Convert MBps to Mbps
+
+                return Math.Round(speedMbps, 2);
+            }
+        }
+
+
         #endregion
 
 

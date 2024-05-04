@@ -32,6 +32,9 @@ public partial class IpOptionViewModel : BaseViewModel
     [ObservableProperty]
     int countOfIpRanges;
 
+    [ObservableProperty]
+    int downloadSizeForSpeedTest;
+
 
     bool saved = false;
 
@@ -67,6 +70,7 @@ public partial class IpOptionViewModel : BaseViewModel
             CountOfRepeatTestForEachIp = IpOptions.CountOfRepeatTestForEachIp;
             CountOfIpRanges = IpOptions.CountOfIpRanges;
             CountOfIpForTest = IpOptions.CountOfIpForTest;
+            DownloadSizeForSpeedTest = IpOptions.DownloadSizeForSpeedTest;
         }
     }
 
@@ -119,6 +123,15 @@ public partial class IpOptionViewModel : BaseViewModel
             await App.Current.MainPage.DisplayAlert("error", "Minimum Count is 1", "ok");
             saved = false;
 
+        }
+        if (DownloadSizeForSpeedTest > 0)
+        {
+            IpOptions.DownloadSizeForSpeedTest = DownloadSizeForSpeedTest;
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("error", "Minimum Download Size For Speed Test is 1", "ok");
+            saved = false;
         }
         if (CountOfIpForTest > 0)
         {

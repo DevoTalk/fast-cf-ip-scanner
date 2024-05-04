@@ -21,4 +21,5 @@ public class IpOptionModel
     public int CountOfRepeatTestForEachIp { get; set; } = 1;
     public int CountOfIpRanges { get; set; } = 4;
     public int CountOfIpForTest { get; set; } = 20;
+    public int DownloadSizeForSpeedTest { get; set; } = 10;
 }

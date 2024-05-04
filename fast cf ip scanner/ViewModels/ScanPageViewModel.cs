@@ -2,6 +2,7 @@
 using fast_cf_ip_scanner.Views;
 using System;
 using System.ComponentModel;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace fast_cf_ip_scanner.ViewModels
 {
@@ -89,29 +90,30 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async Task ShowSelectedIPOption(IPModel ipModel)
         {
-            var workerss = await _workerServices.GetWorkers();
 
             if (ipModel != null)
             {
                 var workers = await _workerServices.GetWorkers();
 
-                string[] workersForShow;
+                string[] Options;
                 if(workers.Count == 0)
                 {
-                    workersForShow = new string[2];
-                    workersForShow[1] = "Please add a worker";
+                    Options = new string[2];
+                    Options[1] = "Please add a worker";
                 }
                 else
                 {
-                    workersForShow = new string[workers.Count + 1];
+                    Options = new string[workers.Count + 2];
                 }
-                workersForShow[0] = "Copy";
+                Options[0] = "Copy";
+
+                Options[1] = "speed test";
                 
-                for (int i = 1; i <= workers.Count; i++)
+                for (int i = 2; i <= workers.Count; i++)
                 {
-                    workersForShow[i] = workers[i-1].Url;
+                    Options[i] = workers[i-2].Url;
                 }
-                var reslut = await App.Current.MainPage.DisplayActionSheet($"What to Do With {ipModel.IP}", null, null, workersForShow);
+                var reslut = await App.Current.MainPage.DisplayActionSheet($"What to Do With {ipModel.IP}", null, null, Options);
 
                 if (reslut != null)
                 {
@@ -120,6 +122,12 @@ namespace fast_cf_ip_scanner.ViewModels
                         var ip = ipModel.IP.Split("/")[0];
                         await Clipboard.SetTextAsync(ip);
                         await App.Current.MainPage.DisplayAlert("Copied", $"the {ip} is copied", "OK");
+                    }
+                    else if(reslut== "speed test")
+                    {
+                        var downloadSizeForSpeedTestToMB = _ipOption.DownloadSizeForSpeedTest * 1024 * 1024;
+                        var speed = await _iPServices.GetDownloadSpeedAsync($"https://speed.cloudflare.com/__down?bytes={downloadSizeForSpeedTestToMB}", ipModel.IP);
+                        await App.Current.MainPage.DisplayAlert("speed", $"{speed} Mb", "ok");
                     }
                     else if(reslut == "Please add a worker")
                     {

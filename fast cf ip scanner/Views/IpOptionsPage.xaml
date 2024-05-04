@@ -68,6 +68,9 @@
             <Label Text="Count of IP for test"/>
             <Entry x:Name="CountOfIpForTest" Text="{Binding CountOfIpForTest}"/>
 
+            <Label Text="Download size for speed test"/>
+            <Entry x:Name="DownloadSizeForSpeedTest" Text="{Binding DownloadSizeForSpeedTest}"/>
+            
             <Button Text="Save" Command="{Binding SaveCommand}"/>
 
         </StackLayout>
