@@ -367,16 +367,17 @@ namespace fast_cf_ip_scanner.Services
                 var stopwatch = Stopwatch.StartNew();
                 var response = await httpClient.GetAsync(targetUrl, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
-                stopwatch.Stop();
 
                 // Read the content as byte array to ensure the download is completed.
                 var contentBytes = await response.Content.ReadAsByteArrayAsync();
+                stopwatch.Stop();
+
                 
                 // Calculate download speed in Mbps (Mega bits per second).
                 double fileSizeInMegabytes = contentBytes.Length / (1024d * 1024d);
                 double durationInSeconds = stopwatch.Elapsed.TotalSeconds;
-                double speedMbps = (fileSizeInMegabytes / durationInSeconds) * 8; // Convert MBps to Mbps
-
+                double speedMBps = fileSizeInMegabytes / durationInSeconds; // Convert MBps to Mbps
+                var speedMbps = speedMBps * 8;
                 return Math.Round(speedMbps, 2);
             }
         }

@@ -98,8 +98,8 @@ namespace fast_cf_ip_scanner.ViewModels
                 string[] Options;
                 if(workers.Count == 0)
                 {
-                    Options = new string[2];
-                    Options[1] = "Please add a worker";
+                    Options = new string[3];
+                    Options[2] = "Please add a worker";
                 }
                 else
                 {
@@ -125,8 +125,10 @@ namespace fast_cf_ip_scanner.ViewModels
                     }
                     else if(reslut== "speed test")
                     {
+                        IsBusy = true;
                         var downloadSizeForSpeedTestToMB = _ipOption.DownloadSizeForSpeedTest * 1024 * 1024;
                         var speed = await _iPServices.GetDownloadSpeedAsync($"https://speed.cloudflare.com/__down?bytes={downloadSizeForSpeedTestToMB}", ipModel.IP);
+                        IsBusy = false;
                         await App.Current.MainPage.DisplayAlert("speed", $"{speed} Mb", "ok");
                     }
                     else if(reslut == "Please add a worker")
