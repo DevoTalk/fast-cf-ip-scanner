@@ -11,12 +11,8 @@ namespace fast_cf_ip_scanner.ViewModels
         [ObservableProperty]
         ObservableCollection<IPModel> validIPs;
 
-
         [ObservableProperty]
         bool isBusy = false;
-
-
-        
 
         IpOptionModel _ipOption;
         
@@ -72,8 +68,6 @@ namespace fast_cf_ip_scanner.ViewModels
                 await _iPServices.AddValidIpToDb(validIp);
             }
             IsBusy = false;
-
-
         }
         
         [RelayCommand]
@@ -85,12 +79,9 @@ namespace fast_cf_ip_scanner.ViewModels
             });
         }
 
-        
-
         [RelayCommand]
         async Task ShowSelectedIPOption(IPModel ipModel)
         {
-
             if (ipModel != null)
             {
                 var workers = await _workerServices.GetWorkers();
