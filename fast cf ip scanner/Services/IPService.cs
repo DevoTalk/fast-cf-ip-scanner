@@ -1,14 +1,10 @@
-﻿
-
-using fast_cf_ip_scanner.Data;
+﻿using fast_cf_ip_scanner.Data;
 using Microsoft.Maui.Animations;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-
-
 namespace fast_cf_ip_scanner.Services
 {
     public class IPService
@@ -26,7 +22,6 @@ namespace fast_cf_ip_scanner.Services
             var validIps = new List<IPModel>();
             switch (protcol)
             {
-
                 case "Http test":
                     validIps = await GetValidٌIPWithHttpTest(ips, ipOptions);
                     break;
@@ -38,6 +33,7 @@ namespace fast_cf_ip_scanner.Services
                 //case "UDP test":
                 //    validIps = await GetValidIPWithUDPTest(ips, ipOptions);
                 //    break;
+                
                 case "Terminal Ping test":
                     validIps = await GetValidIpWithPingTest(ips, ipOptions);
                     break;
@@ -51,7 +47,6 @@ namespace fast_cf_ip_scanner.Services
 
         public async Task<List<IPModel>> GetValidٌIPWithHttpTest(string[] ips, IpOptionModel ipOptions)
         {
-
             var validIp = new ConcurrentBag<IPModel>();
 
             async Task HttpTest(string ipAddresse)
@@ -71,7 +66,6 @@ namespace fast_cf_ip_scanner.Services
                 {
                     foreach (var port in ipOptions.Ports)
                     {
-
                         try
                         {
                             stopwatch.Start();
@@ -92,7 +86,7 @@ namespace fast_cf_ip_scanner.Services
                         }
                     }
                 }
-                if (ports.Any())
+                if (ports.Count > 0)
                 {
                     var totalPing = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
                     int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp * ipOptions.Ports.Count);
@@ -181,7 +175,7 @@ namespace fast_cf_ip_scanner.Services
                     }
                 }
 
-                if (ports.Any())
+                if (ports.Count > 0)
                 {
                     int ping = totalPing / (ipOptions.CountOfRepeatTestForEachIp * ipOptions.Ports.Count);
 
@@ -221,7 +215,6 @@ namespace fast_cf_ip_scanner.Services
 
         public async Task<List<IPModel>> GetValidIPWithUDPTest(string[] ips, int maxPing)
         {
-
             var validIp = new ConcurrentBag<IPModel>();
             var randips = GetRandomIp(ips);
             foreach (var ipAddresse in randips)
@@ -350,7 +343,6 @@ namespace fast_cf_ip_scanner.Services
 
         public List<string> GetRandomIp(string[] ips, int ipCount = 20, int ipRangeCount = 4)
         {
-
             Random random = new Random();
 
             var randomIpRange = new List<string>();
@@ -388,6 +380,7 @@ namespace fast_cf_ip_scanner.Services
                 int randomIndex = random.Next(allPorts.Count);
                 randomPorts[i] = allPorts[randomIndex];
             }
+
             return randomPorts;
         }
 
