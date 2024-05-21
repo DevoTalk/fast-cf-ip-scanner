@@ -2,7 +2,6 @@
 using SQLite;
 namespace fast_cf_ip_scanner.Data
 {
-
     public class FastCFIPScannerDatabase
     {
         SQLiteAsyncConnection DataBase;
@@ -14,7 +13,6 @@ namespace fast_cf_ip_scanner.Data
             DataBase = new SQLiteAsyncConnection(Constants.GetDatabasePath(), Constants.Flags);
             await DataBase.CreateTableAsync<IPModel>();
             await DataBase.CreateTableAsync<WorkerModel>();
-
         }
         public async Task<string[]> GetAllIPs()
         {
@@ -22,7 +20,6 @@ namespace fast_cf_ip_scanner.Data
             {
                 return ipList;
             }
-
             string[] urls = new string[] { "https://getip.ali1707.workers.dev", "https://raw.githubusercontent.com/Ali1707/cloudflare-ips/main/ips.txt" };
 
             HttpClient client = new HttpClient();
@@ -46,10 +43,9 @@ namespace fast_cf_ip_scanner.Data
             }
             catch (Exception ex)
             {
-                return new string[0];
+                return System.Array.Empty<int>();
             }
         }
-
         public async Task AddIP(IPModel ip)
         {
             await Init();
