@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+
 namespace fast_cf_ip_scanner.Services
 {
     public class IPService
@@ -14,9 +15,7 @@ namespace fast_cf_ip_scanner.Services
         {
             _db = db;
         }
-
         #region Test Ips
-
         public async Task<List<IPModel>> GetIpValid(string[] ips, IpOptionModel ipOptions, string protcol)
         {
             var validIps = new List<IPModel>();
@@ -100,8 +99,6 @@ namespace fast_cf_ip_scanner.Services
                     });
                 }
             }
-
-
             #region repeat test
             while (true)
             {
@@ -149,7 +146,6 @@ namespace fast_cf_ip_scanner.Services
                             {
                                 stopwatch.Restart();
                                 var connectTask = tcpClient.ConnectAsync(ip, int.Parse(port));
-
                                 // Wait for either connection or timeout
                                 await Task.WhenAny(connectTask, Task.Delay(ipOptions.MaxPingOfIP));
 
@@ -211,8 +207,6 @@ namespace fast_cf_ip_scanner.Services
 
             return validIp.ToList();
         }
-
-
         public async Task<List<IPModel>> GetValidIPWithUDPTest(string[] ips, int maxPing)
         {
             var validIp = new ConcurrentBag<IPModel>();
@@ -222,17 +216,12 @@ namespace fast_cf_ip_scanner.Services
                 var t = new Task(() =>
                 {
                     var stopwatch = new Stopwatch();
-
                     try
                     {
                         var client = new UdpClient();
 
                         stopwatch.Start();
-
-
                         client.Connect(ipAddresse, 443);
-
-
                         stopwatch.Stop();
 
                         var ping = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
@@ -263,12 +252,6 @@ namespace fast_cf_ip_scanner.Services
             }
             return validIp.ToList();
         }
-
-
-
-
-
-
         public async Task<List<IPModel>> GetValidIpWithPingTest(string[] ips, IpOptionModel ipOptions)
         {
             var validIp = new ConcurrentBag<IPModel>();
@@ -285,8 +268,6 @@ namespace fast_cf_ip_scanner.Services
                         try
                         {
                             var reply = await pingSender.SendPingAsync(ipAddress, ipOptions.MaxPingOfIP);
-
-
                             if (reply.Status == IPStatus.Success)
                             {
                                 ipIsConnected = true;
@@ -336,12 +317,6 @@ namespace fast_cf_ip_scanner.Services
             }
             return validIp.ToList();
         }
-
-
-
-
-
-
         public async Task<double> GetDownloadSpeedAsync(string testUrl, string ipAddress)
         {
             // Replace the host in the test URL with the target IP address.
@@ -363,9 +338,7 @@ namespace fast_cf_ip_scanner.Services
 
                 // Read the content as byte array to ensure the download is completed.
                 var contentBytes = await response.Content.ReadAsByteArrayAsync();
-                stopwatch.Stop();
-
-                
+                stopwatch.Stop();       
                 // Calculate download speed in Mbps (Mega bits per second).
                 double fileSizeInMegabytes = contentBytes.Length / (1024d * 1024d);
                 double durationInSeconds = stopwatch.Elapsed.TotalSeconds;
@@ -374,11 +347,7 @@ namespace fast_cf_ip_scanner.Services
                 return Math.Round(speedMbps, 2);
             }
         }
-
-
         #endregion
-
-
         public List<string> GetRandomIp(string[] ips, int ipCount = 20, int ipRangeCount = 4)
         {
             Random random = new Random();
@@ -422,13 +391,11 @@ namespace fast_cf_ip_scanner.Services
             return randomPorts;
         }
 
-
         public async Task<string[]> GetIps()
         {
             var IpAddresses = await _db.GetAllIPs();
             return IpAddresses;
         }
-
         public async Task AddValidIpToDb(IPModel ip)
         {
             await _db.AddIP(ip);
@@ -440,7 +407,5 @@ namespace fast_cf_ip_scanner.Services
                 await _db.AddIP(ip);
             }
         }
-
-
     }
 }
