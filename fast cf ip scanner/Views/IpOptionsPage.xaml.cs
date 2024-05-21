@@ -9,6 +9,4 @@ public partial class IpOptionsPage : ContentPage
 		BindingContext = viewModel;
         vm = viewModel;
     }
-
-    
 }
