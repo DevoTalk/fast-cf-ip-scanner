@@ -3,8 +3,8 @@ This tool helps you scan CloudFlare IPs with send a http requiset or terminal pi
 <p align="center">
     <img src="https://img.shields.io/github/languages/top/DevoTalk/fast-cf-ip-scanner" alt="languages" >
     <a href="https://www.codefactor.io/repository/github/devotalk/fast-cf-ip-scanner"><img src="https://www.codefactor.io/repository/github/devotalk/fast-cf-ip-scanner/badge" alt="CodeFactor" /></a>
-    <img src="https://img.shields.io/github/stars/DevoTalk/fast-cf-ip-scanner" alt="stars">
     <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/DevoTalk/fast-cf-ip-scanner/total">
+    <img src="https://img.shields.io/github/stars/DevoTalk/fast-cf-ip-scanner" alt="stars">
 </p>
 
 
