@@ -1,5 +1,4 @@
 ﻿namespace fast_cf_ip_scanner;
-
 public partial class App : Application
 {
 	public App()
@@ -8,6 +7,4 @@ public partial class App : Application
 
 		MainPage = new AppShell();
 	}
-    
-
 }
