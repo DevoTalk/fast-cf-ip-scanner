@@ -1,6 +1,5 @@
 ﻿using Microsoft.Maui.ApplicationModel;
 
-
 namespace fast_cf_ip_scanner.ViewModels
 {
     public partial class SettingViewModel : BaseViewModel
@@ -16,8 +15,7 @@ namespace fast_cf_ip_scanner.ViewModels
         {
             _services = service;
             workers = new ObservableCollection<WorkerModel>();
-            LoadWorkers();
-            
+            LoadWorkers();            
         }
         public async Task LoadWorkers()
         {
@@ -36,7 +34,6 @@ namespace fast_cf_ip_scanner.ViewModels
             await LoadWorkers();
         }
 
-
         [RelayCommand]
         async Task OpenLink(string url)
         {
@@ -46,7 +43,6 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async void AddNewWorkerUrl()
         {
-
             if (await _services.isValidWorkerUrl(NewWorkerUrl))
             {
                 var workerUrl = NewWorkerUrl.Replace("https://", "").Replace("http://", "").Replace(".dev/", ".dev");
