@@ -6,7 +6,6 @@ namespace fast_cf_ip_scanner.ViewModels;
 
 public record PortForShow(string Port,bool IsChecked);
 
-
 [QueryProperty("IpOptions", "IpOptions")]
 
 public partial class IpOptionViewModel : BaseViewModel
@@ -35,9 +34,7 @@ public partial class IpOptionViewModel : BaseViewModel
     [ObservableProperty]
     int downloadSizeForSpeedTest;
 
-
     bool saved = false;
-
 
     public IpOptionViewModel()
     {
@@ -102,7 +99,6 @@ public partial class IpOptionViewModel : BaseViewModel
         {
             await App.Current.MainPage.DisplayAlert("error", "Minimum Count is 1", "ok");
             saved = false;
-
         }
         if (MaxPingOfIP > 100)
         {
@@ -112,7 +108,6 @@ public partial class IpOptionViewModel : BaseViewModel
         {
             await App.Current.MainPage.DisplayAlert("error", "Minimum ping is 100", "ok");
             saved = false;
-
         }
         if (CountOfIpRanges > 0)
         {
@@ -122,7 +117,6 @@ public partial class IpOptionViewModel : BaseViewModel
         {
             await App.Current.MainPage.DisplayAlert("error", "Minimum Count is 1", "ok");
             saved = false;
-
         }
         if (DownloadSizeForSpeedTest > 0)
         {
@@ -133,23 +127,10 @@ public partial class IpOptionViewModel : BaseViewModel
             await App.Current.MainPage.DisplayAlert("error", "Minimum Download Size For Speed Test is 1", "ok");
             saved = false;
         }
-        if (CountOfIpForTest > 0)
-        {
-            try
-            {
-
-            }
-            catch
-            {
-
-            }
-        }
-        else
+        if (CountOfIpForTest <= 0)
         {
             saved = false;
         }
-
-
         if (saved)
         {
             var countSelectedOfPorts = HttpPorts.Where(p => p.IsChecked).Count() + HttpsPorts.Where(p => p.IsChecked).Count();
@@ -173,6 +154,4 @@ public partial class IpOptionViewModel : BaseViewModel
         }
         return randomPorts;
     }
-
-    
 }
