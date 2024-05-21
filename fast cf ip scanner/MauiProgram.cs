@@ -16,7 +16,6 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-
         #region views
         
 		builder.Services.AddSingleton<ScanPage>();
