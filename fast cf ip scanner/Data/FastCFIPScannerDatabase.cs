@@ -43,7 +43,7 @@ namespace fast_cf_ip_scanner.Data
             }
             catch (Exception ex)
             {
-                return System.Array.Empty<int>();
+                return System.Array.Empty<string>();
             }
         }
         public async Task AddIP(IPModel ip)
