@@ -21,7 +21,7 @@ namespace fast_cf_ip_scanner.Services
             var validIps = new List<IPModel>();
             switch (protcol)
             {
-                case "Http test":
+                case "Http test (recommended)":
                     validIps = await GetValidٌIPWithHttpTest(ips, ipOptions);
                     break;
 
@@ -73,9 +73,12 @@ namespace fast_cf_ip_scanner.Services
 
                             if (result != null)
                             {
-                                if (!ports.Any(p => p == port))
+                                if (result.Headers.Contains("Server") && result.Headers.GetValues("Server").Contains("cloudflare"))
                                 {
-                                    ports.Add(port);
+                                    if (!ports.Any(p => p == port))
+                                    {
+                                        ports.Add(port);
+                                    }
                                 }
                             }
                         }

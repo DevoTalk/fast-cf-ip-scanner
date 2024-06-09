@@ -34,7 +34,7 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async void GetValidIPs()
         {
-            var protocols = new string[] { "Http test", "TCP test", "Terminal Ping test" };
+            var protocols = new string[] { "Http test (recommended)", "TCP test", "Terminal Ping test" };
 
             var selectedProtocol =
                 await App.Current.MainPage.DisplayActionSheet("which protocol", "Cancel", null, protocols);
