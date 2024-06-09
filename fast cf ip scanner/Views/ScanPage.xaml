@@ -11,83 +11,95 @@
     <ContentPage.Resources>
         <services:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ContentPage.Resources>
-    
-    <ScrollView>
 
-        <VerticalStackLayout>
-            <Grid 
-                ColumnSpacing="10"
-                Padding="10"
-                Margin="10">
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Button
-                    Text="Start"
-                    Style="{StaticResource MyBtn}"
-                    Grid.Column="0" 
-                    Command="{Binding GetValidIPsCommand}"
-                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
-                    HeightRequest="50"
-                    />
+    <Grid RowDefinitions="*, Auto">
+        <!-- Scrollable Content -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout>
+                <Grid 
+                    ColumnSpacing="10"
+                    Padding="10"
+                    Margin="10">
 
-                <Button
-                    Text="Options"
-                    Style="{StaticResource MyBtn}"
-                    Grid.Column="1" 
-                    Command="{Binding ShowOptionsForSearchIpCommand}"
-                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
-                    />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button
+                        Text="Start"
+                        Style="{StaticResource MyBtn}"
+                        Grid.Column="0" 
+                        Command="{Binding GetValidIPsCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
+                        HeightRequest="50"
+                        />
+
+                    <Button
+                        Text="Options"
+                        Style="{StaticResource MyBtn}"
+                        Grid.Column="1" 
+                        Command="{Binding ShowOptionsForSearchIpCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
+                        />
+                </Grid>
+
+                <CollectionView ItemsSource="{Binding ValidIPs}"
+                                x:Name="validIPCollectionView"
+                                HorizontalOptions="Center"
+                                SelectionChangedCommand="{Binding ShowSelectedIPOptionCommand}"
+                                SelectionChangedCommandParameter="{Binding Source={x:Reference validIPCollectionView}, Path=SelectedItem}"
+                                SelectionMode="Single"
+                                IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:IPModel">
+                            <Grid Padding="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="ip :" TextColor="White" />
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding IP}" TextColor="White" />
+
+                                <Label Grid.Row="1" Grid.Column="0" Text="ping :" TextColor="White" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Ping}" TextColor="White" />
+
+                                <Label Grid.Row="2" Grid.Column="0" Text="ports :" TextColor="White" />
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ports}" TextColor="White" />
+
+                                <Label Grid.Row="3" Grid.Column="0" Text="TimeOut :" TextColor="White" />
+                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding CountOfTimeout}" TextColor="White" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button
+            Grid.Row="1"
+            Text="export all ips to clipboard"
+            IsVisible="{Binding ExportBtnVisible}"
+            IsEnabled="{Binding ExportBtnVisible}"
+            Command="{Binding ExportAllIPsToClipboardCommand}"
+            HeightRequest="50"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="End"
+            BackgroundColor="DimGray"
+            TextColor="White">
             
-            </Grid>
-
-
-
-
-            <CollectionView ItemsSource="{Binding ValidIPs}"
-                            x:Name="validIPCollectionView"
-                            HorizontalOptions="Center"
-                            SelectionChangedCommand="{Binding ShowSelectedIPOptionCommand}"
-                            SelectionChangedCommandParameter="{Binding Source={x:Reference validIPCollectionView}, Path=SelectedItem}"
-                            SelectionMode="Single"
-                            IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:IPModel">
-                        <Grid Padding="15">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="ip :" TextColor="White" />
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding IP}" TextColor="White" />
-
-                            <Label Grid.Row="1" Grid.Column="0" Text="ping :" TextColor="White" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Ping}" TextColor="White" />
-
-                            <Label Grid.Row="2" Grid.Column="0" Text="ports :" TextColor="White" />
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ports}" TextColor="White" />
-
-                            <Label Grid.Row="3" Grid.Column="0" Text="TimeOut :" TextColor="White" />
-                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding CountOfTimeout}" TextColor="White" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
-        </VerticalStackLayout>
-    </ScrollView>
+        </Button>
+    </Grid>
 
 </ContentPage>
