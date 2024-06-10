@@ -87,7 +87,7 @@ namespace fast_cf_ip_scanner.ViewModels
         [RelayCommand]
         async Task ExportAllIPsToClipboard()
         {
-            var ips = string.Join(",", ValidIPs.Select(ip => ip.IP.ToString()));
+            var ips = string.Join("\n", ValidIPs.Select(ip => ip.IP.ToString()));
             await Clipboard.SetTextAsync(ips);
             await App.Current.MainPage.DisplayAlert("Copied", $"the ips is copied", "OK");
         }
