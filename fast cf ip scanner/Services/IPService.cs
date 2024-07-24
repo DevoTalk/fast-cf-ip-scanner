@@ -16,10 +16,10 @@ namespace fast_cf_ip_scanner.Services
             _db = db;
         }
         #region Test Ips
-        public async Task<List<IPModel>> GetIpValid(string[] ips, IpOptionModel ipOptions, string protcol)
+        public async Task<List<IPModel>> GetIpValid(string[] ips, IpOptionModel ipOptions, string protocol)
         {
             var validIps = new List<IPModel>();
-            switch (protcol)
+            switch (protocol)
             {
                 case "Http test (recommended)":
                     validIps = await GetValidIPWithHttpTest(ips, ipOptions);
@@ -137,7 +137,7 @@ namespace fast_cf_ip_scanner.Services
             {
                 var ports = new List<string>();
                 var stopwatch = new Stopwatch();
-                var totolTimeOut = 0;
+                var totalTimeOut = 0;
                 var totalPing = 0;
                 for (int i = 0; i < ipOptions.CountOfRepeatTestForEachIp; i++)
                 {
@@ -163,13 +163,13 @@ namespace fast_cf_ip_scanner.Services
                                 }
                                 else
                                 {
-                                    totolTimeOut++;
+                                    totalTimeOut++;
                                 }
                             }
                         }
                         catch
                         {
-                            totolTimeOut++;
+                            totalTimeOut++;
                         }
                     }
                 }
@@ -183,7 +183,7 @@ namespace fast_cf_ip_scanner.Services
                         IP = ip,
                         Ping = ping,
                         Ports = string.Join(",", ports),
-                        CountOfTimeout = totolTimeOut
+                        CountOfTimeout = totalTimeOut
                     });
                 }
             }
@@ -214,7 +214,7 @@ namespace fast_cf_ip_scanner.Services
         {
             var validIp = new ConcurrentBag<IPModel>();
             var randips = GetRandomIp(ips);
-            foreach (var ipAddresse in randips)
+            foreach (var ipAddress in randips)
             {
                 var t = new Task(() =>
                 {
@@ -224,7 +224,7 @@ namespace fast_cf_ip_scanner.Services
                         var client = new UdpClient();
 
                         stopwatch.Start();
-                        client.Connect(ipAddresse, 443);
+                        client.Connect(ipAddress, 443);
                         stopwatch.Stop();
 
                         var ping = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
@@ -233,7 +233,7 @@ namespace fast_cf_ip_scanner.Services
                         {
                             validIp.Add(new IPModel
                             {
-                                IP = ipAddresse.ToString(),
+                                IP = ipAddress.ToString(),
                                 Ping = ping,
                             });
                         }
@@ -370,11 +370,11 @@ namespace fast_cf_ip_scanner.Services
             }
             var randomIps = new List<string>();
             var countOfEachRange = ipCount / ipRangeCount;
-            foreach (var iprange in randomIpRange)
+            foreach (var ipRange in randomIpRange)
             {
                 for (int i = 1; i < countOfEachRange; i++)
                 {
-                    randomIps.Add(iprange + random.Next(255));
+                    randomIps.Add(ipRange + random.Next(255));
                 }
             }
             return randomIps;
