@@ -48,7 +48,7 @@ namespace fast_cf_ip_scanner.Services
         {
             var validIp = new ConcurrentBag<IPModel>();
 
-            async Task HttpTest(string ipAddresse)
+            async Task HttpTest(string ipAddress)
             {
                 var stopwatch = new Stopwatch();
 
@@ -68,7 +68,7 @@ namespace fast_cf_ip_scanner.Services
                         try
                         {
                             stopwatch.Start();
-                            var result = await Client.GetAsync($"http://{ipAddresse}/__down:{port}");
+                            var result = await Client.GetAsync($"http://{ipAddress}/__down:{port}");
                             stopwatch.Stop();
 
                             if (result != null)
@@ -95,7 +95,7 @@ namespace fast_cf_ip_scanner.Services
 
                     validIp.Add(new IPModel
                     {
-                        IP = ipAddresse.ToString(),
+                        IP = ipAddress.ToString(),
                         Ping = ping,
                         Ports = string.Join(",", ports),
                         CountOfTimeout = timeoutCount
