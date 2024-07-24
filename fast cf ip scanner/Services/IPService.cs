@@ -22,7 +22,7 @@ namespace fast_cf_ip_scanner.Services
             switch (protcol)
             {
                 case "Http test (recommended)":
-                    validIps = await GetValidٌIPWithHttpTest(ips, ipOptions);
+                    validIps = await GetValidIPWithHttpTest(ips, ipOptions);
                     break;
 
                 case "TCP test":
@@ -38,13 +38,13 @@ namespace fast_cf_ip_scanner.Services
                     break;
 
                 default:
-                    validIps = await GetValidٌIPWithHttpTest(ips, ipOptions);
+                    validIps = await GetValidIPWithHttpTest(ips, ipOptions);
                     break;
             }
             return validIps;
         }
 
-        public async Task<List<IPModel>> GetValidٌIPWithHttpTest(string[] ips, IpOptionModel ipOptions)
+        public async Task<List<IPModel>> GetValidIPWithHttpTest(string[] ips, IpOptionModel ipOptions)
         {
             var validIp = new ConcurrentBag<IPModel>();
 
