@@ -1,4 +1,5 @@
-name: Build and publish .NET MAUI App Android
+name: Build and Publish .NET MAUI App
+
 on:
   push:
     branches: [ "master" ]
@@ -6,8 +7,8 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  # Build and publish Android
+  build-android:
     runs-on: windows-latest
 
     steps:
@@ -24,18 +25,72 @@ jobs:
       run: dotnet workload install maui
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build Android
       run: dotnet build -c Release -f net8.0-android /p:AndroidSigningKeyStore=FastCfIPScanner.keystore /p:AndroidSigningKeyAlias=key /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
     - name: List directory contents
       run: |
         ls -r
-    - name: Create Release
+    - name: Create Android Release
       uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: ${{ secrets.TOKEN }} # Replace with your actual secret token
         automatic_release_tag: "latest"
         prerelease: true
-        title: "Development Build"
+        title: "Android Build"
         files: ./**/*.apk
 
+  # Build and publish Windows
+  build-windows:
+    runs-on: windows-latest
 
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Install .NET MAUI
+      run: dotnet workload install maui
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build Windows
+      run: dotnet build -c Release -f net8.0-windows --no-restore
+    - name: List directory contents
+      run: |
+        ls -r
+    - name: Create Windows Release
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: ${{ secrets.TOKEN }}
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Windows Build"
+        files: ./**/*.exe
+
+  # Build and publish Linux
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Install .NET MAUI
+      run: dotnet workload install maui
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build Linux
+      run: dotnet build -c Release -f net8.0-linux --no-restore
+    - name: List directory contents
+      run: |
+        ls -r
+    - name: Create Linux Release
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: ${{ secrets.TOKEN }}
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Linux Build"
+        files: ./**/*.AppImage
