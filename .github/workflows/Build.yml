@@ -2,11 +2,9 @@ name: Build
 
 on:
   push:
-    branches:
-      - main  # Trigger build on push to main branch
+    branches: [ "master" ]
   pull_request:
-    branches:
-      - main  # Trigger build on pull request to main branch
+    branches: [ "master" ]
 
 jobs:
   build:
