@@ -1,0 +1,45 @@
+name: Build .NET MAUI App
+
+on:
+  push:
+    branches:
+      - main  # Trigger build on push to main branch
+  pull_request:
+    branches:
+      - main  # Trigger build on pull request to main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    strategy:
+      matrix:
+        platform: [android, ios, maccatalyst, windows]  # Matrix build for different platforms
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'  # .NET version
+
+    - name: Install dependencies
+      run: |
+        dotnet restore  # Restore project dependencies
+
+    - name: Build project
+      run: |
+        dotnet build --configuration Release --target ${{ matrix.platform }} --no-restore  # Build project for target platform
+
+    - name: Publish for ${{ matrix.platform }}
+      run: |
+        dotnet publish --configuration Release --output ./publish --target ${{ matrix.platform }} --no-restore  # Publish the app for the selected platform
+
+    - name: Archive artifacts
+      if: success()  # Archive the build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.platform }}-output
+        path: ./publish
