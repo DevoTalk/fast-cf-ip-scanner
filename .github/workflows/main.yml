@@ -39,7 +39,6 @@ jobs:
         files: ./**/*.apk
 
   # Build and publish Windows
-    # Build and publish Windows
   build-windows:
     runs-on: windows-latest
 
@@ -57,12 +56,10 @@ jobs:
       run: dotnet restore
     - name: Build Windows
       run: |
-        dotnet build -c Release -f net8.0-windows --no-restore \
-          /p:TargetPlatformVersion=10.0.17763.0 \
-          /p:SupportedOSPlatformVersion=10.0.17763.0 \
-          -p:SolutionDir=./ # Ensure correct working directory
+        dotnet build -c Release -f net8.0-windows --no-restore /p:TargetPlatformVersion=10.0.17763.0 /p:SupportedOSPlatformVersion=10.0.17763.0
     - name: List directory contents
-      run: ls -r
+      run: |
+        ls -r
     - name: Create Windows Release
       uses: marvinpinto/action-automatic-releases@latest
       with:
