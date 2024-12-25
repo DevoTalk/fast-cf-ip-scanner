@@ -1,5 +1,4 @@
 name: Build and Publish .NET MAUI App
-
 on:
   push:
     branches: [ "master" ]
@@ -49,12 +48,17 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Update Workloads
+      run: dotnet workload update
     - name: Install .NET MAUI
       run: dotnet workload install maui
     - name: Restore dependencies
       run: dotnet restore
     - name: Build Windows
-      run: dotnet build -c Release -f net8.0-windows --no-restore
+      run: |
+        dotnet build -c Release -f net8.0-windows --no-restore \
+          /p:TargetPlatformVersion=10.0.17763.0 \
+          /p:SupportedOSPlatformVersion=10.0.17763.0
     - name: List directory contents
       run: |
         ls -r
