@@ -1,4 +1,4 @@
-name: Build .NET MAUI App
+name: Build
 
 on:
   push:
