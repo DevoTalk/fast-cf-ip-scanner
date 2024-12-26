@@ -23,18 +23,22 @@ jobs:
       with:
         dotnet-version: '8.0.x'  # .NET version
 
-    - name: Install dependencies
+    - name: Install MAUI workloads
       run: |
-        dotnet restore  # Restore project dependencies
-
+          dotnet workload install maui
+          dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows
+  
+    - name: Restore dependencies
+      run: dotnet restore
+  
     - name: Build project
       run: |
-        dotnet build --configuration Release --target ${{ matrix.platform }} --no-restore  # Build project for target platform
+        dotnet build --configuration Release --framework ${{ matrix.platform }} --no-restore
 
     - name: Publish for ${{ matrix.platform }}
       run: |
-        dotnet publish --configuration Release --output ./publish --target ${{ matrix.platform }} --no-restore  # Publish the app for the selected platform
-
+          dotnet publish --configuration Release --framework ${{ matrix.platform }} --output ./publish --no-restore
+  
     - name: Archive artifacts
       if: success()  # Archive the build artifacts
       uses: actions/upload-artifact@v3
