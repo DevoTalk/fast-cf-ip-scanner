@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        platform: [android, ios, maccatalyst, windows]  # Matrix build for different platforms
+        platform: [android, ios, macos, windows]  # Matrix build for different platforms
 
     steps:
     - name: Check out the code
@@ -25,8 +25,7 @@ jobs:
 
     - name: Install MAUI workloads
       run: |
-          dotnet workload install maui
-          dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows
+          dotnet workload install maui-android maui-ios maui-macos maui-windows
   
     - name: Restore dependencies
       run: dotnet restore
